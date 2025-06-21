@@ -4,6 +4,16 @@
   boot.loader.grub.device = "/dev/sda";
   boot.loader.grub.useOSProber = true;
 
+  # Use latest kernelPackages.
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+
+  # Garbage collect & optimize /nix/store daily.
+  nix.gc = {
+    automatic = true;
+    options = "--delete-older-than 7d";
+  };
+  nix.optimise.automatic = true;
+
   # Enable networking.
   networking.networkmanager.enable = true;
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -42,20 +52,26 @@
     variant = "";
   };
 
-  # Enable sound with pipewire
+  # Pipewire to enable sound
   hardware.alsa.enablePersistence = true;
+  services.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
-    audio.enable = true;
-    pulse.enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
     jack.enable = true;
-    alsa = {
-      enable = true;
-      support32Bit = true;
-    };
+    pulse.enable = true;
+    wireplumber.enable = true;
   };
-  services.pulseaudio.enable = false;
+
+  # Allow unfree packages
+  nixpkgs.config.allowUnfree = true;
+
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

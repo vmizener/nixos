@@ -13,7 +13,7 @@ let
   };
 in {
   options = {
-    browsers.zen.enable = lib.mkEnableOption "enables zen browser";
+    browsers.zen.enable = lib.mkEnableOption "zen browser";
   };
   config = lib.mkIf config.browsers.zen.enable {
     environment.systemPackages = [zenWithWayland];

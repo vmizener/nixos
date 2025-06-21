@@ -1,0 +1,6 @@
+{ ... }: {
+  imports = [
+    ./ckb-next.nix
+  ];
+}
+
