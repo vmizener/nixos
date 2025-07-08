@@ -9,6 +9,7 @@
     ./hardware-configuration.nix
 
     ../../modules/applications/browsers
+    ../../modules/applications/gaming.nix
     ../../modules/applications/utilities
     ../../modules/system/wm
   ];
@@ -16,6 +17,7 @@
 
   browsers.firefox.enable = true;
   browsers.zen.enable = true;
+  gaming.enable = true;
   wm.sway.enable = true;
   wm.niri.enable = true;
   utilities.ckb-next.enable = true;
@@ -49,9 +51,9 @@
     ani-cli
     bc
     delta
-    discord
     eww
     fd
+    fzf
     home-manager
     jq
     # kanshi
@@ -67,8 +69,6 @@
     mpv
     neovim
     pavucontrol
-    streamlink
-    streamlink-twitch-gui-bin
     usbutils
     vim
     yadm
@@ -77,27 +77,7 @@
     wev
     wget
     wofi
-    xwayland-satellite
   ];
-
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
-
-  # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
-
-  # Enable the gnome-keyring secrets vault. 
-  # Will be exposed through DBus to programs willing to store secrets.
-  services.gnome.gnome-keyring.enable = true;
-
-  programs.steam = {
-    enable = true;
-  };
 
   programs.zsh = {
     enable = true;
@@ -115,16 +95,5 @@
     };
   };
 
-  # services.greetd = {
-  #   enable = true;
-  #   settings = {
-  #     default_session = {
-  #       command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd 'niri --session'";
-  #       user = "greeter";
-  #     };
-  #   };
-  # };
   services.displayManager.ly.enable = true;
-  systemd.services.display-manager.environment.XDG_CURRENT_DESKTOP = "X-NIXOS-SYSTEMD-AWARE";
-
 }

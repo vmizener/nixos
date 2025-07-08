@@ -14,6 +14,8 @@
       url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    niri.url = "github:sodiboo/niri-flake";
+    swww.url = "github:LGFae/swww";
     zen-browser = {
       url = "github:pfaj/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -42,7 +44,7 @@
       baohaus = nixpkgs.lib.nixosSystem {
         specialArgs = { inherit inputs system; };
         modules = [
-          ./hosts/baohaus/configuration.nix
+          ./nixos/hosts/baohaus/configuration.nix
           home-manager.nixosModules.home-manager
           {
             home-manager = {

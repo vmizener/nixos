@@ -60,7 +60,7 @@ input {
 
     // Focus windows and outputs automatically when moving the mouse into them.
     // Setting max-scroll-amount="0%" makes it work only on windows already fully on screen.
-    // focus-follows-mouse max-scroll-amount="0%"
+    focus-follows-mouse max-scroll-amount="0%"
 }
 
 environment {
@@ -167,10 +167,10 @@ layout {
         // - CSS-like notation: "rgb(255, 127, 0)", rgba(), hsl() and a few others.
 
         // Color of the ring on the active monitor.
-        active-color "#7fc8ff"
+        active-color "#7fc8ff55"
 
         // Color of the ring on inactive monitors.
-        inactive-color "#505050"
+        inactive-color "#50505055"
 
         // You can also use gradients. They take precedence over solid colors.
         // Gradients are rendered the same as CSS linear-gradient(angle, from, to).
@@ -260,8 +260,6 @@ layout {
 // which may be more convenient to use.
 // See the binds section below for more spawn examples.
 
-spawn-at-startup "sleep 5; systemctl --user reload-or-restart kanshi.service"
-spawn-at-startup "sleep 5; eww open topbar"
 spawn-at-startup "dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=X-NIXOS-SYSTEMD-AWARE"
 spawn-at-startup "xwayland-satellite"
 
@@ -270,7 +268,7 @@ spawn-at-startup "xwayland-satellite"
 // Additionally, clients will be informed that they are tiled, removing some client-side rounded corners.
 // This option will also fix border/focus ring drawing behind some semitransparent windows.
 // After enabling or disabling this, you need to restart the apps for this to take effect.
-// prefer-no-csd
+prefer-no-csd
 
 // You can change the path where screenshots are saved.
 // A ~ at the front will be expanded to the home directory.
@@ -291,6 +289,10 @@ animations {
     // slowdown 3.0
 }
 
+workspace "steam" {
+    open-on-output "HDMI-A-1"
+}
+
 // Window rules let you adjust behavior for individual windows.
 // Find more information on the wiki:
 // https://github.com/YaLTeR/niri/wiki/Configuration:-Window-Rules
@@ -305,13 +307,51 @@ window-rule {
     default-column-width {}
 }
 
-// Open the Firefox picture-in-picture player as floating by default.
+// Open picture-in-picture player as floating by default.
 window-rule {
     // This app-id regular expression will work for both:
     // - host Firefox (app-id is "firefox")
     // - Flatpak Firefox (app-id is "org.mozilla.firefox")
-    match app-id=r#"firefox$"# title="^Picture-in-Picture$"
+    match app-id=r#"^(firefox|zen)$"# title="^Picture-in-Picture$"
     open-floating true
+}
+
+// Open video players as floating by default.
+window-rule {
+    match app-id=r#"^mpv$"#
+    open-floating true
+}
+
+// Steam windows
+window-rule {
+    match app-id="steam"
+    open-on-workspace "steam"
+    open-floating true
+}
+window-rule {
+    match app-id="steam" title=r#"^Steam$"#
+    open-on-workspace "steam"
+    default-column-width { proportion 0.85; }
+    open-floating false
+}
+window-rule {
+    match app-id="steam" title=r#"^Friends List$"#
+    open-on-workspace "steam"
+    default-column-width { proportion 0.15; }
+    open-floating false
+}
+window-rule {
+    match app-id="steam" title=r#"^notificationtoasts_\d+_desktop$"#
+    default-floating-position x=10 y=50 relative-to="bottom-right"
+}
+
+// Games
+window-rule {
+    match app-id="dota2" title=r#"^Dota 2$"#
+    // default-window-height{ proportion 1.00; }
+    // default-column-width { proportion 1.00; }
+    open-maximized true
+    open-fullscreen true
 }
 
 // Example: block out two password managers from screen capture.
@@ -370,6 +410,7 @@ binds {
     Mod+O repeat=false { toggle-overview; }
 
     Mod+Shift+Q { close-window; }
+    Mod+Ctrl+MouseRight { close-window; }
 
     Mod+Left  { focus-column-left; }
     Mod+Down  { focus-window-down; }
@@ -453,20 +494,21 @@ binds {
     // You can set a cooldown on any bind, but it's most useful for the wheel.
     Mod+WheelScrollDown      cooldown-ms=150 { focus-workspace-down; }
     Mod+WheelScrollUp        cooldown-ms=150 { focus-workspace-up; }
-    Mod+Ctrl+WheelScrollDown cooldown-ms=150 { move-column-to-workspace-down; }
-    Mod+Ctrl+WheelScrollUp   cooldown-ms=150 { move-column-to-workspace-up; }
+    // Mod+Ctrl+WheelScrollDown cooldown-ms=150 { move-column-to-workspace-down; }
+    // Mod+Ctrl+WheelScrollUp   cooldown-ms=150 { move-column-to-workspace-up; }
+    Mod+Grave { focus-workspace-previous; }
 
     Mod+WheelScrollRight      { focus-column-right; }
     Mod+WheelScrollLeft       { focus-column-left; }
-    Mod+Ctrl+WheelScrollRight { move-column-right; }
-    Mod+Ctrl+WheelScrollLeft  { move-column-left; }
+    // Mod+Ctrl+WheelScrollRight { move-column-right; }
+    // Mod+Ctrl+WheelScrollLeft  { move-column-left; }
 
     // Usually scrolling up and down with Shift in applications results in
     // horizontal scrolling; these binds replicate that.
-    Mod+Shift+WheelScrollDown      { focus-column-right; }
-    Mod+Shift+WheelScrollUp        { focus-column-left; }
-    Mod+Ctrl+Shift+WheelScrollDown { move-column-right; }
-    Mod+Ctrl+Shift+WheelScrollUp   { move-column-left; }
+    Mod+Ctrl+WheelScrollDown      { focus-column-right-or-first; }
+    Mod+Ctrl+WheelScrollUp        { focus-column-left-or-last; }
+    // Mod+Ctrl+Shift+WheelScrollDown { move-column-right; }
+    // Mod+Ctrl+Shift+WheelScrollUp   { move-column-left; }
 
     // Similarly, you can bind touchpad scroll "ticks".
     // Touchpad scrolling is continuous, so for these binds it is split into
@@ -583,11 +625,14 @@ binds {
     Mod+Escape allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }
 
     // The quit action will show a confirmation dialog to avoid accidental exits.
-    Mod+Shift+E { quit; }
+    // Mod+Shift+E { quit; }
     Ctrl+Alt+Delete { quit; }
 
     // Powers off the monitors. To turn them back on, do any input like
     // moving the mouse or pressing any other key.
     Mod+Shift+P { power-off-monitors; }
+
+    Mod+E { spawn "makoctl dismiss -a"; }
+    Mod+Shift+E { spawn "makoctl restore"; }
 }
 
