@@ -9,8 +9,6 @@
     systemd.services.display-manager.environment.XDG_CURRENT_DESKTOP = "X-NIXOS-SYSTEMD-AWARE";
     environment.systemPackages = with pkgs; [
       xwayland-satellite
-    ] ++ [
-      inputs.swww.packages.${pkgs.system}.swww
     ];
   };
 }

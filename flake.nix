@@ -15,6 +15,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     niri.url = "github:sodiboo/niri-flake";
+    quickshell = {
+      url = "git+https://git.outfoxxed.me/outfoxxed/quickshell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     swww.url = "github:LGFae/swww";
     zen-browser = {
       url = "github:pfaj/zen-browser-flake";
