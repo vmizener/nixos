@@ -1,6 +1,9 @@
 { config, flakePath, lib, pkgs, ... }: {
   home.packages = with pkgs; [
     gparted
+    libnotify
+    unzip
+    zip
   ];
 
   home = {
