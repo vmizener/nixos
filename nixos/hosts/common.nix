@@ -7,6 +7,20 @@
   # Use latest kernelPackages.
   boot.kernelPackages = pkgs.linuxPackages_latest;
 
+  # Include some useful standard packages
+  environment.systemPackages = with pkgs; [
+    bc
+    findutils
+    git
+    gparted
+    killall
+    mlocate
+    tree
+    usbutils
+    vim
+    wget
+  ];
+
   # Garbage collect & optimize /nix/store daily.
   nix.gc = {
     automatic = true;
@@ -83,16 +97,9 @@
   # Will be exposed through DBus to programs willing to store secrets.
   services.gnome.gnome-keyring.enable = true;
 
+  # Enable nix flakes
   nix.settings.experimental-features = [
     "nix-command"
     "flakes"
   ];
-
-  # This value determines the NixOS release from which the default
-  # settings for stateful data, like file locations and database versions
-  # on your system were taken. It‘s perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
-  # Before changing this value read the documentation for this option
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "24.05"; # Did you read the comment?
 }

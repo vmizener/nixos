@@ -1,8 +1,15 @@
 { config, flakePath, lib, pkgs, ... }: {
   home.packages = with pkgs; [
-    gparted
-    libnotify
+    ranger
+    grim
+    slurp
+    wl-clipboard
+    mpv
+    pavucontrol
     unzip
+    wdisplays
+    wev
+    wofi
     zip
   ];
 

@@ -1,0 +1,38 @@
+from prompt_toolkit.keys import Keys
+
+xontrib load abbrevs
+xontrib load fish_completer
+xontrib load fzf-widgets
+xontrib load jedi
+# xontrib load prompt_vi_mode
+xontrib load prompt_starship
+xontrib load sh
+
+xontrib load autovox
+xontrib load vox
+xontrib load voxapi
+
+# def _build_lprompt():
+#     sections = [
+#         '{YELLOW}{user}{RESET}@{BLUE}{hostname}{RESET}:{cwd}',
+#         # '{vi_mode}',
+#         '{RESET}{curr_branch}',
+#     ]
+#     lprompt = '─'.join(['{INTENSE_GREEN}[' + f'{section}' + '{INTENSE_GREEN}]' for section in sections])
+#     return '{INTENSE_GREEN}┬─' + lprompt + '\n{INTENSE_GREEN}╰─>{INTENSE_RED}{prompt_end}{RESET} '
+#
+# def _build_rprompt():
+#     return '{INTENSE_GREEN}[{BLUE}{localtime}{INTENSE_GREEN}]{RESET}'
+#
+# $PROMPT = _build_lprompt
+# $RIGHT_PROMPT = _build_rprompt
+$VI_MODE = True
+$XONSH_COLOR_STYLE = 'solarized-light'
+
+$fzf_history_binding = Keys.ControlR
+
+abbrevs["nrs"] = "sudo nixos-rebuild switch";
+abbrevs["ns"] = "nix search nixpkgs";
+abbrevs["suspend"] = "systemctl suspend";
+
+# vim: set filetype=python:

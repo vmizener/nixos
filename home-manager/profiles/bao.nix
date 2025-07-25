@@ -9,6 +9,16 @@
   modules.fuzzel.enable = true;
   modules.quickshell.enable = true;
   modules.swww.enable = true;
+  modules.webtorrent.enable = true;
 
   services.mako.enable = true;
+
+  home.packages = with pkgs; [
+    ani-cli
+    animdl
+    eww
+    kitty
+    mako
+    neovim
+  ];
 }

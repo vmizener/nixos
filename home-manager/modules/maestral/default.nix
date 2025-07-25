@@ -18,12 +18,13 @@
         Type = "notify";
         NotifyAccess = "exec";
         PermissionsStartOnly = true;
-        ExecStart = "${pkgs.maestral}/bin/maestral start -f";
+        ExecStart = "${pkgs.maestral}/bin/maestral start --foreground";
         ExecStop = "${pkgs.maestral}/bin/maestral stop";
         ExecStopPost = "${pkgs.writeShellScript "maestral-stop-post.sh" ''
           if [ $SERVICE_RESULT != success ]; then ${pkgs.libnotify}/bin/notify-send 'Maestral daemon failed'; fi
         ''}";
         WatchdogSec = "30s";
+        Environment = "PYTHONOPTIMIZE=2 LC_CTYPE=UTF-8";
       };
     };
     systemd.user.services.maestral-gui= {
