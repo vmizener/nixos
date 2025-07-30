@@ -12,6 +12,7 @@
     bc
     findutils
     git
+    gnumake
     gparted
     killall
     mlocate

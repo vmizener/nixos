@@ -6,6 +6,7 @@
     ./niri
     ./quickshell
     ./swww
+    ./torrra
     ./webtorrent
   ];
 }

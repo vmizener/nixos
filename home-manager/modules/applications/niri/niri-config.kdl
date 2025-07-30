@@ -167,7 +167,7 @@ layout {
         // - CSS-like notation: "rgb(255, 127, 0)", rgba(), hsl() and a few others.
 
         // Color of the ring on the active monitor.
-        active-color "#7fc8ff55"
+        active-color "#7fc8ff22"
 
         // Color of the ring on inactive monitors.
         inactive-color "#50505055"
@@ -320,6 +320,7 @@ window-rule {
 window-rule {
     match app-id=r#"^mpv$"#
     open-floating true
+    open-fullscreen true
 }
 
 // Steam windows
@@ -630,9 +631,11 @@ binds {
 
     // Powers off the monitors. To turn them back on, do any input like
     // moving the mouse or pressing any other key.
-    Mod+Shift+P { power-off-monitors; }
+    Mod+Ctrl+Shift+P { power-off-monitors; }
 
-    Mod+E { spawn "makoctl dismiss -a"; }
-    Mod+Shift+E { spawn "makoctl restore"; }
+    // Utilities
+    Mod+E { spawn "makoctl" "dismiss" "-a"; }
+    Mod+Shift+E { spawn "makoctl" "restore"; }
+    Mod+P { spawn "clipman" "pick" "--tool=wofi"; }
 }
 

@@ -1,16 +1,22 @@
 { config, flakePath, lib, inputs, pkgs, ... }: {
   imports = [
     ./common.nix
-    ../modules
+    ../modules/applications
+    ../modules/dev
   ];
-  modules.kanshi.enable = true;
-  modules.maestral.enable = true;
-  modules.niri.enable = true;
-  modules.fuzzel.enable = true;
-  modules.quickshell.enable = true;
-  modules.swww.enable = true;
-  modules.webtorrent.enable = true;
 
+  apps.kanshi.enable = true;
+  apps.maestral.enable = true;
+  apps.niri.enable = true;
+  apps.fuzzel.enable = true;
+  apps.quickshell.enable = true;
+  apps.swww.enable = true;
+  apps.webtorrent.enable = true;
+
+  dev.c.enable = true;
+  dev.golang.enable = true;
+
+  services.clipman.enable = true;
   services.mako.enable = true;
 
   home.packages = with pkgs; [

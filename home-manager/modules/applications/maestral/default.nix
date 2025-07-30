@@ -1,11 +1,11 @@
 { config, flakePath, lib, pkgs, ... }: {
   options = {
-    modules.maestral.enable = lib.mkEnableOption "maestral";
+    apps.maestral.enable = lib.mkEnableOption "maestral";
   };
-  config = lib.mkIf config.modules.maestral.enable {
+  config = lib.mkIf config.apps.maestral.enable {
     home.packages = with pkgs; [ maestral maestral-gui ];
     xdg.configFile = {
-      "maestral/maestral.ini".source = config.lib.file.mkOutOfStoreSymlink "${flakePath config}/home-manager/modules/maestral/maestral.ini";
+      "maestral/maestral.ini".source = config.lib.file.mkOutOfStoreSymlink "${flakePath config}/home-manager/modules/applications/maestral/maestral.ini";
     };
     systemd.user.services.maestral = {
       Unit = {

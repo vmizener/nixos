@@ -26,12 +26,18 @@
 
   services.displayManager.ly.enable = true;
 
+  virtualisation.docker.rootless = {
+    enable = true;
+    setSocketVariable = true;
+  };
+
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.bao = {
     isNormalUser = true;
     description = "bao";
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [];
+    shell = pkgs.xonsh;
   };
   # Enable automatic login for the user.
   services.getty.autologinUser = "bao";

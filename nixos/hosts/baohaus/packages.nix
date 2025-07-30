@@ -9,6 +9,7 @@
     delta
     fd
     fzf
+    nh
     jq
     libnotify
     ripgrep

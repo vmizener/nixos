@@ -29,24 +29,26 @@
   # ====
   # `outputs` is a function of one argument that takes an attribute set of all the realized inputs, and outputs another attribute set.
   # All inputs resolved above are passed in as arguments to the outputs function, along with `self`, which is the directory of this flake in the store.
-  outputs = { self, nixpkgs, home-manager, ... }@inputs:
+  outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, ... }@inputs:
   let
     system = "x86_64-linux";
     flakePath = config: "${config.home.homeDirectory}/config";
     pkgs = import nixpkgs {
       inherit system;
-      config = {
-        allowUnfree = true;
-      };
+      config = { allowUnfree = true; };
     };
-    extraSpecialArgs = { inherit flakePath inputs; };
+    unstable-pkgs = import nixpkgs-unstable {
+      inherit system;
+      config = { allowUnfree = true; };
+    };
+    extraSpecialArgs = { inherit flakePath inputs unstable-pkgs; };
   in
   {
     # NixOS configuration entrypoint
     # Available through 'nixos-rebuild --flake .#your-hostname'
     nixosConfigurations = {
       baohaus = nixpkgs.lib.nixosSystem {
-        specialArgs = { inherit inputs system; };
+        specialArgs = { inherit inputs system unstable-pkgs; };
         modules = [
           ./nixos/hosts/baohaus/configuration.nix
           home-manager.nixosModules.home-manager

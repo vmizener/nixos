@@ -1,38 +1,52 @@
+from prompt_toolkit.key_binding import KeyBindings
 from prompt_toolkit.keys import Keys
 
 xontrib load abbrevs
-xontrib load fish_completer
-xontrib load fzf-widgets
-xontrib load jedi
-# xontrib load prompt_vi_mode
-xontrib load prompt_starship
-xontrib load sh
-
 xontrib load autovox
+xontrib load jedi
 xontrib load vox
 xontrib load voxapi
 
-# def _build_lprompt():
-#     sections = [
-#         '{YELLOW}{user}{RESET}@{BLUE}{hostname}{RESET}:{cwd}',
-#         # '{vi_mode}',
-#         '{RESET}{curr_branch}',
-#     ]
-#     lprompt = '─'.join(['{INTENSE_GREEN}[' + f'{section}' + '{INTENSE_GREEN}]' for section in sections])
-#     return '{INTENSE_GREEN}┬─' + lprompt + '\n{INTENSE_GREEN}╰─>{INTENSE_RED}{prompt_end}{RESET} '
-#
-# def _build_rprompt():
-#     return '{INTENSE_GREEN}[{BLUE}{localtime}{INTENSE_GREEN}]{RESET}'
-#
-# $PROMPT = _build_lprompt
-# $RIGHT_PROMPT = _build_rprompt
-$VI_MODE = True
-$XONSH_COLOR_STYLE = 'solarized-light'
+xontrib load fzf-widgets
+xontrib load prompt_vi_mode
+xontrib load sh
+
+
+$XONSH_COLOR_STYLE = "solarized-light"
+$XONSH_STYLE_OVERRIDES = {
+    "BACKGROUND_BLACK": "bg:#343434 #ccc",
+    "Token.Error": "#bf3434",
+    "Token.PTK.Aborting": "#646e7d",
+    "Token.PTK.AutoSuggestion": "#646e7d",
+}
+$PROMPT = \
+    "{INTENSE_BLACK}{user}{YELLOW}@{INTENSE_BLACK}{hostname} " \
+    + "{INTENSE_WHITE}{cwd}" \
+    + "{RESET}\n{prompt_end} "
+$RIGHT_PROMPT = \
+    "{gitstatus} " \
+    + "{INTENSE_BLACK}{localtime}"
 
 $fzf_history_binding = Keys.ControlR
 
-abbrevs["nrs"] = "sudo nixos-rebuild switch";
-abbrevs["ns"] = "nix search nixpkgs";
-abbrevs["suspend"] = "systemctl suspend";
+@events.on_ptk_create
+def custom_keybindings(bindings, **kw):
+    @bindings.add(Keys.ControlSpace)
+    def _(event):
+        """
+        Accepts the auto-suggestion.
+        """
+        buff = event.app.current_buffer
+        if buff.suggestion:
+            event.current_buffer.insert_text(buff.suggestion.text)
+
+aliases["cat"] = "bat"
+abbrevs["cdr"] = "cd $(git rev-parse --show-toplevel)"
+abbrevs["ll"] = "ls -l"
+abbrevs["la"] = "ls -al"
+abbrevs["nhs"] = "nh os switch /etc/nixos"
+abbrevs["nhus"] = "nh os switch -u /etc/nixos"
+abbrevs["ns"] = "nix search nixpkgs"
+abbrevs["suspend"] = "systemctl suspend"
 
 # vim: set filetype=python:

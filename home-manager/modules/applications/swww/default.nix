@@ -1,8 +1,8 @@
 { config, flakePath, inputs, lib, pkgs, ... }: {
   options = {
-    modules.swww.enable = lib.mkEnableOption "swww";
+    apps.swww.enable = lib.mkEnableOption "swww";
   };
-  config = lib.mkIf config.modules.swww.enable {
+  config = lib.mkIf config.apps.swww.enable {
     home.packages = [ inputs.swww.packages.${pkgs.system}.swww ];
     systemd.user.services.swww = {
       Install = {

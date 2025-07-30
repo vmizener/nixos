@@ -14,7 +14,6 @@
 
         # nix packaged xontribs
         xonsh.xontribs.xontrib-abbrevs
-        xonsh.xontribs.xontrib-fish-completer
         xonsh.xontribs.xontrib-jedi
         xonsh.xontribs.xontrib-vox
 
@@ -49,17 +48,6 @@
             hash = "sha256-KL/AxcsvjxqxvjDlf1axitgME3T+iyuW6OFb1foRzN8=";
           };
         })
-        (buildPythonPackage rec {
-          pname = "";
-          version = "0.3.6";
-          src = pkgs.fetchFromGitHub {
-            owner = "anki-code";
-            repo = "xontrib-prompt-starship";
-            tag = version;
-            hash = "sha256-CLOvMa3L4XnH53H/k6/1W9URrPakPjbX1T1U43+eSR0=";
-          };
-        })
-        # xonsh.xontribs.xontrib-output-search
       ];
     };
   };

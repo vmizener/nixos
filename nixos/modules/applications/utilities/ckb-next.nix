@@ -14,7 +14,7 @@
       serviceConfig = {
         ExecStart = "${pkgs.ckb-next}/bin/ckb-next -b";
         Restart = "on-failure";
-        RestartSec = "1";
+        RestartSec = "3";
       };
       wantedBy = [ "default.target" ];
     };
