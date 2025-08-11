@@ -5,10 +5,12 @@
     ../modules/dev
   ];
 
+  apps.eww.enable = true;
+  apps.fuzzel.enable = true;
   apps.kanshi.enable = true;
+  apps.kitty.enable = true;
   apps.maestral.enable = true;
   apps.niri.enable = true;
-  apps.fuzzel.enable = true;
   apps.quickshell.enable = true;
   apps.swww.enable = true;
   apps.webtorrent.enable = true;
@@ -23,7 +25,6 @@
     ani-cli
     animdl
     eww
-    kitty
     mako
     neovim
   ];

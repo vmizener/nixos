@@ -1,0 +1,503 @@
+;;
+;; Icons: https://fontawesome.com/icons
+;;
+
+(defvar str_reveal-slide-duration "200ms")
+(defvar str_reveal-fade-duration "400ms")
+(defvar str_reveal-fade-duration-long "800ms")
+(defvar str_hover-delay-long "0.3")
+(defvar str_hover-delay-short "0.1")
+
+;;;;;;;;;;;;;
+;; Windows ;;
+;;;;;;;;;;;;;
+
+(defwindow topbar
+  :monitor 1
+  :geometry (geometry
+              :x "0%"
+              :y "0%"
+              :width "100%"
+              :anchor "top center")
+  ; X11 props
+  :windowtype "dock"
+  ; Wayland props
+  :exclusive true
+  (topbar))
+(defvar bool_topbar-visible true)
+
+(defwindow audio-window
+  :monitor 1
+  :geometry (geometry
+              :anchor "top right")
+  ; Wayland props
+  :stacking "fg"
+  (audio-control-pane))
+(defvar bool_audio-window-visible false)
+
+(defwindow side-panel
+  :monitor 1
+  :geometry (geometry
+              :anchor "top right")
+  ; Wayland props
+  :stacking "fg"
+  (side-panel))
+(defvar bool_side-panel-visible false)
+
+;;;;;;;;;;;;;
+;; Widgets ;;
+;;;;;;;;;;;;;
+
+;;;;;;;;;;
+;; Top Bar
+(defwidget topbar []
+  (eventbox
+    :onhover "./run eww::set_locked_var bool_topbar-hover"
+    :onhoverlost "./run eww::unset_locked_var bool_topbar-hover ${str_hover-delay-long}"
+    (centerbox
+      :class "top-bar"
+      :orientation "h"
+      (topbar-left)
+      (topbar-middle)
+      (topbar-right))))
+(defwidget topbar-left []
+  (box
+    :orientation "h"
+    :halign "start"
+    (workspaces)
+    (current-mode)))
+(defwidget topbar-middle []
+  (box
+    :orientation "h"
+    :halign "fill"
+    :hexpand true
+    (clock)))
+(defwidget topbar-right []
+  (box
+    :orientation "h"
+    :halign "end"
+    (eventbox
+      :onhover "./run eww::set_locked_var bool_topbar-right-hover"
+      :onhoverlost "./run eww::unset_locked_var bool_topbar-right-hover ${str_hover-delay-long}"
+      (box
+        :space-evenly false
+        :spacing 7
+        (tray)
+        (weather)
+        (ime)
+        (statusbar)
+        (hamburger)))))
+(defvar bool_topbar-hover false)
+(defvar bool_topbar-middle-hover false)
+(defvar bool_topbar-right-hover false)
+
+;;;;;;;;
+;; Clock
+(defwidget clock []
+  (box
+    :orientation "h"
+    :class "clock"
+    :space-evenly false
+    :hexpand false
+    (revealer
+      :transition "slideright"
+      :reveal bool_topbar-hover
+      :duration str_reveal-slide-duration
+      (label
+        :text "${str_date}, "))
+    (label
+      :text "${str_time}")
+    (revealer
+      :transition "slideleft"
+      :reveal bool_topbar-hover
+      :duration str_reveal-slide-duration
+      (label
+        :text ":${str_time-sec}"))))
+(defpoll str_date :interval "5s" `date +"%B %d"`)
+(defpoll str_time :interval "5s" `date +"%H:%M"`)
+(defpoll str_time-sec :interval "1s" `date +"%S"`)
+
+;;;;;;;;;;
+;; Tray
+(defwidget tray []
+  (systray
+    :class "systray"
+    :spacing 7))
+
+;;;;;;;;;;
+;; IME
+(defwidget ime []
+  (eventbox
+    :onclick `./run ime::toggle_active`
+    :onrightclick `./run ime::open_config`
+    (box
+      :orientation "h"
+      :class "dockcontainer"
+      :halign "end"
+      :spacing 7
+      :space-evenly false
+      (label
+        :class "dockcontainer-icon"
+        :text {str_ime-name == 'pinyin' ? "拼" : ""}))))
+(deflisten str_ime-name :initial "N/A" `./run ime::mode_subscriber`)
+
+;;;;;;;;;;
+;; Mode
+(defwidget current-mode []
+  (box
+    :orientation "h"
+    :class "dockcontainer"
+    :halign "start"
+    :spacing 7
+    :space-evenly false
+    :visible {str_cur-mode != 'default'}
+    (label
+      :class "dockcontainer-text color-alert"
+      :text "${str_cur-mode} mode")))
+(deflisten str_cur-mode :initial 'default' `./run mode::mode_subscriber`)
+
+;;;;;;;;;;
+;; Weather
+(defwidget weather []
+  (box
+    :orientation "h"
+    :class "dockcontainer"
+    :halign "end"
+    :spacing 7
+    :space-evenly false
+    :tooltip "Weather is ${json_weather.Desc} today. Feels like ${json_weather.FeelsLikeF}°F in ${json_weather.Loc}"
+    (label :text "${json_weather.Icon} ${json_weather.TempF}°F")))
+(defpoll json_weather
+  :initial '{"FeelsLikeC":"0","FeelsLikeF":"0","TempC":"0","TempF":"0","Loc":"N/A","Desc":"N/A","Icon" :""}'
+  :interval "5m"
+  `./run weather::status`)
+
+;;;;;;;;;;;;;
+;; Status Bar
+(defwidget statusbar []
+  (eventbox
+    :onhover "./run eww::set_locked_var bool_statusbar-hover"
+    :onhoverlost "./run eww::unset_locked_var bool_statusbar-hover ${str_hover-delay-short}"
+    (box
+      :orientation "h"
+      :class "dockcontainer"
+      :halign "end"
+      :spacing 7
+      :space-evenly false
+      (statusbar-net)
+      (statusbar-bat)
+      (statusbar-ram)
+      (statusbar-cpu)
+      (statusbar-vol))))
+(defvar bool_statusbar-hover false)
+;; Bar Entry
+(defwidget statusbar-entry [text-label             ; Icon to display
+                            ?text-label-class      ; Class of icon
+                            text-hover             ; Icon to display when hovering
+                            ?text-hover-class      ; Class of hover icon
+                            subtext-hover          ; Icon to display when hovering
+                            ?subtext-hover-class   ; Class of hover icon
+                            progress-value         ; Value of base progress circle
+                            ?progress-class        ; Class of base progress circle
+                            ?alt-progress-value    ; Value of overlay progress circle
+                            ?alt-progress-class    ; Class of overlay progress circle
+                            ?tooltip
+                            ?visible]
+  (box
+    :orientation "h"
+    :spacing 5
+    :space-evenly false
+    :visible {visible ?: true}
+    :tooltip {tooltip}
+    (overlay
+      (circular-progress
+        :class {progress-class != '' ? progress-class : alt-progress-value == '' ? "color-normal" : "color-active"}
+        :value {progress-value}
+        :height 30
+        :width 30
+        :thickness 2)
+      (circular-progress
+        :class {alt-progress-class ?: "color-normal"}
+        :value {alt-progress-value ?: 0}
+        :height 30
+        :width 30
+        :visible {alt-progress-value != '' ? true : false}
+        :thickness 2)
+      (revealer
+        :halign "center"
+        :valign "center"
+        :transition "crossfade"
+        :reveal {! bool_statusbar-hover}
+        :duration str_reveal-fade-duration
+        (label
+          :class {text-label-class ?: "dockcontainer-icon"}
+          :text text-label))
+      (revealer
+        :transition "crossfade"
+        :reveal bool_statusbar-hover
+        :duration str_reveal-fade-duration
+        (box
+          :orientation "v"
+          :halign "center"
+          :valign "center"
+          :space-evenly false
+          (label
+            :class {text-hover-class ?: "dockcontainer-text"}
+            :text text-hover)
+          (label
+            :class {subtext-hover-class ?: "dockcontainer-subtext"}
+            :text subtext-hover))))))
+;; Network
+(defwidget statusbar-net []
+  (box
+    (overlay
+      ; Display crossed wifi when no connections are actuve
+      :class "dockcontainer-icon color-disabled"
+      :visible {arraylength(json_net-connections) == 0}
+      :tooltip "No connection"
+      (circular-progress :value 100 :height 30 :width 30 :thickness 2)
+      (label :halign "center" :valign "center" :text "")
+      (label :halign "center" :valign "center" :text ""))
+    (for conn in json_net-connections
+      (statusbar-entry
+        :text-label {conn.type == "ethernet" ? "" : ""}
+        :text-label-class "dockcontainer-icon ${conn.is_default ? 'color-active' : 'color-inactive'}"
+        :text-hover "${conn.strength}%"
+        :subtext-hover {conn.type == "ethernet" ? "eth" : "wifi"}
+        :progress-value {conn.strength}
+        :tooltip {conn.name}))))
+(defpoll json_net-connections
+  :interval "5s"
+  :initial "[]"
+  `./run network::get_active_connections`)
+
+;; Battery
+(defwidget statusbar-bat []
+  (statusbar-entry
+    :text-label {! (str_statusbar-bat-status =~ '^discharging$') ? '':
+                 int_statusbar-bat-capacity > 80 ? "" :
+                 int_statusbar-bat-capacity > 60 ? "" :
+                 int_statusbar-bat-capacity > 40 ? "" :
+                 int_statusbar-bat-capacity > 20 ? "" : ""}
+    :text-label-class "dockcontainer-icon ${int_statusbar-bat-capacity > 10 ? "" : "color-critical"}"
+    :text-hover "${int_statusbar-bat-capacity}%"
+    :subtext-hover "bat"
+    :progress-value int_statusbar-bat-capacity
+    :progress-class "${int_statusbar-bat-capacity == 100 ? "color-full" :
+                       int_statusbar-bat-capacity > 25 ? "color-normal" :
+                       int_statusbar-bat-capacity > 10 ? "color-warning" : "color-critical"}"
+    :tooltip "${str_statusbar-bat-status}"
+    :visible bool_statusbar-bat-available))
+(defpoll bool_statusbar-bat-available :interval "1m" :initial false `./run power::on_bat -p`)
+(defpoll int_statusbar-bat-capacity :interval "1m" :initial 0 `./run power::get_capacity`)
+(defpoll str_statusbar-bat-status :interval "1s" `./run power::get_status`)
+;; RAM
+(defwidget statusbar-ram []
+  (statusbar-entry
+    :text-label ""
+    :text-hover "${round(EWW_RAM.used_mem_perc, 0)}%"
+    :subtext-hover "ram"
+    :progress-value "${round(100*(1-(EWW_RAM.free_mem/EWW_RAM.total_mem)), 2)}"
+    :alt-progress-value "${round(EWW_RAM.used_mem_perc, 2)}"
+    :tooltip "Non-Free: ${round(100*(1-(EWW_RAM.free_mem/EWW_RAM.total_mem)), 0)}%"))
+;; CPU
+(defwidget statusbar-cpu []
+  (statusbar-entry
+    :text-label ""
+    :text-hover "${round(EWW_CPU.avg, 0)}%"
+    :subtext-hover "cpu"
+    :progress-value "${round(EWW_CPU.avg, 0)}"))
+;; Volume
+(defwidget statusbar-vol []
+  (eventbox
+    :onclick "pactl set-sink-mute @DEFAULT_SINK@ toggle"
+    :onrightclick "./run eww::popup open audio-window"
+    :onscroll `./run audio::set_mute no && [[ {} == 'up' ]] && pactl set-sink-volume @DEFAULT_SINK@ +5% || pactl set-sink-volume @DEFAULT_SINK@ -5%`
+    (statusbar-entry
+      :text-label {json_audio-status.type == 'headset' ? '' :
+                   json_audio-status.vol == 0 ? "" :
+                   json_audio-status.vol < 30 ? "" :
+                   json_audio-status.vol < 70 ? "" : ""}
+      :text-label-class "dockcontainer-icon ${json_audio-status.vol == 0 ? 'color-disabled' :
+                                              json_audio-status.vol > 100 ? 'color-warning' : ''}"
+      :text-hover "${json_audio-status.vol}%"
+      :subtext-hover "vol"
+      :progress-value {json_audio-status.vol == 100 ? json_audio-status.vol : json_audio-status.vol % 100}
+      :progress-class {json_audio-status.vol > 100 ? "bg-normal color-amp" : "color-normal"}
+      :tooltip {json_audio-status.desc})))
+(deflisten json_audio-status :initial '{"vol":0,"desc":"N/A","type":"default","sink":"N/A"}' `./run audio::subscribe`)
+
+;;;;;;;;
+;; Audio Panel
+
+(defwidget audio-control-pane []
+  (eventbox
+    :onhoverlost "./run eww::popup close audio-window ${str_reveal-fade-duration}"
+    :onscroll `./run audio::scroll_sinks {} && ${EWW_CMD} update json_audio-sinks="$(./run audio::get_sinks)"`
+    (revealer
+      :transition "crossfade"
+      :reveal {bool_audio-window-visible}
+      :duration str_reveal-fade-duration
+      (box
+        :orientation "h"
+        :class "audio-control-pane"
+        :space-evenly false
+        (box
+          :orientation "v"
+          :class "audio-control-pane-box"
+          (for sink in json_audio-sinks
+            (button
+              :onclick `./run audio::set_default_sink ${sink.id} && ${EWW_CMD} update json_audio-sinks="$(./run audio::get_sinks)"`
+              :class "audio-control-pane-sink-option${sink.is_default ? '-default' : ''}"
+              (label
+                :show-truncated false
+                :text "${sink.name}"))))
+        (box
+          :class "audio-control-pane-box"
+          (button
+            :class "audio-control-pane-config-button"
+            :onclick `pavucontrol &`
+            (label
+              :show-truncated false
+              :text "")))))))
+(defpoll json_audio-sinks
+  :interval "1s"
+  :initial "[]"
+  :run-while bool_audio-window-visible
+  `./run audio::get_sinks`)
+
+;;;;;;;;
+;; Hamburger Button
+
+(defwidget hamburger []
+  (box
+    :orientation "h"
+    (eventbox
+      :onclick "./run eww::popup open side-panel"
+      (label
+        :class "hamburgermenu"
+        :text ""))))
+;;;;;;;;
+;; Workspaces
+
+(defwidget workspaces []
+  (box
+    :orientation "h"
+    :space-evenly false
+    :halign "start"
+    (for monitor in json_workspaces
+      (box
+        :class "dockcontainer"
+        :orientation "h"
+        :space-evenly false
+        :spacing 2
+        (for workspace in monitor
+          (button
+            :class {workspace.focused ? "workspace-btn-focus" :
+                    workspace.visible ? "workspace-btn-visible" : "workspace-btn"}
+            :onclick "./run workspace::focus ${workspace.name}"
+            "${workspace.name}"))))))
+(deflisten json_workspaces :initial "[]" `./run workspace::focus_subscriber`)
+
+;;;;;;;;
+;; Side Panel
+
+(defwidget side-panel []
+  (eventbox
+    :onhoverlost "./run eww::popup close side-panel ${str_reveal-fade-duration}"
+    (revealer
+      :transition "crossfade"
+      :reveal {bool_side-panel-visible}
+      :duration str_reveal-fade-duration
+      (box
+        :class "side-panel-container"
+        :space-evenly false
+        :orientation "h"
+        :valign "start"
+        (box
+          :class "dockcontainer"
+          (calendar))
+        (powermenu)))))
+
+(defwidget powermenu []
+  (box
+    :class "dockcontainer"
+    :orientation "v"
+    :valign "start"
+    (large-button-option
+      :id "suspend"
+      :label ""
+      :text "Suspend"
+      :onclick "./run sys::suspend &")
+    (large-button-option
+      :id "lock"
+      :label ""
+      :text "Lock"
+      :onclick "./run sys::lock &")
+    (large-button-option
+      :id "logout"
+      :label ""
+      :text "Logout"
+      :onclick "./run sys::logout &")
+    (large-button-option
+      :id "shutdown"
+      :label ""
+      :text "Shutdown"
+      :onclick "./run sys::shutdown &")))
+
+(defwidget large-button-option [id
+                                label
+                                text
+                                onclick]
+  (eventbox
+    :onclick {(json_large-button-states?.["${id}"] ?: false) ?
+                (int_large-button-delay < 100 ? "" : "${onclick}") :
+                "./run eww::jq-update json_large-button-states '.${id} = true' && ./run eww::counter int_large-button-delay start"}
+    :onhoverlost "./run eww::jq-update json_large-button-states '.${id} = false' && ./run eww::counter int_large-button-delay reset"
+    :hexpand true
+    (overlay
+      (revealer
+        :transition "crossfade"
+        :reveal {! (json_large-button-states?.["${id}"] ?: false)}
+        :duration str_reveal-fade-duration-long
+        (box
+          :class "dockcontainer-button bg-active"
+          :orientation "v"
+          :halign "fill"
+          :hexpand true
+          (label
+            :class "dockcontainer-icon dockcontainer-supertext"
+            :show-truncated false
+            :text "${label}")
+          (label
+           :class "dockcontainer-text"
+            :show-truncated false
+           :text "${text}")))
+      (revealer
+        :transition "crossfade"
+        :reveal {json_large-button-states?.["${id}"] ?: false}
+        :duration str_reveal-fade-duration-long
+        (box
+          :class "dockcontainer-button bg-normal"
+          :orientation "v"
+          :halign "fill"
+          :hexpand true
+          (label
+            :class "dockcontainer-text"
+            :show-truncated false
+            :text "Confirm?")
+          (overlay
+            (revealer
+              :transition "crossfade"
+              :reveal {int_large-button-delay < 100}
+              :duration str_reveal-fade-duration
+              (circular-progress :class "color-active" :value {int_large-button-delay} :thickness 15))
+            (revealer
+              :transition "crossfade"
+              :reveal {! (int_large-button-delay < 100)}
+              :duration str_reveal-fade-duration
+              (label
+                :show-truncated false
+                :text "OK"))))))))
+(defvar json_large-button-states "{}")
+(deflisten int_large-button-delay :initial 0 `./run eww::counter int_large-button-delay init 0.8`)

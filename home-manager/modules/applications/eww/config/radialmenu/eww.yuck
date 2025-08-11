@@ -1,0 +1,50 @@
+;;;;;;;;;;;;;
+;; Windows ;;
+;;:;;;;;;;;;;;
+
+(defwindow radialmenu-overlay
+  :monitor 0
+  :geometry (geometry
+              :x "0%"
+              :y "0%"
+              :width "40%"
+              :height "40%"
+              :anchor "top left")
+  :stacking "overlay"
+  (radialmenu))
+
+(deflisten cursorpos "./scripts/cursorpos_subscriber.sh")
+(defwidget radialmenu []
+  (box
+    :class "radialmenu"
+    (transform
+      :translate-x "${cursorpos.x}"
+      :translate-y {"${cursorpos.y}"-60/2}  ;; Account for topbar offset
+      (box
+        :orientation "v"
+        (box
+          :orientation "h"
+          (radialoption :x 1)
+          (radialoption :x 2)
+          (radialoption :x 3))
+        (box
+          :orientation "h"
+          (radialoption :x 4)
+          (label :text "hi")
+          (radialoption :x 6))
+        (box
+          :orientation "h"
+          (radialoption :x 7)
+          (radialoption :x 8)
+          (radialoption :x 9))))))
+
+(defwidget radialoption [x]
+  (box
+    :class "test"
+    :halign "start"
+    :valign "start"
+    (button
+      :class "test2"
+      :onclick "echo '${x}'"
+      (label :text "${x}"))))
+

@@ -307,16 +307,17 @@ window-rule {
     default-column-width {}
 }
 
-// Open picture-in-picture player as floating by default.
 window-rule {
     // This app-id regular expression will work for both:
     // - host Firefox (app-id is "firefox")
     // - Flatpak Firefox (app-id is "org.mozilla.firefox")
     match app-id=r#"^(firefox|zen)$"# title="^Picture-in-Picture$"
+    default-floating-position x=0 y=0 relative-to="top-right"
+    default-column-width { proportion 0.5; }
+    default-window-height { proportion 0.5; }
     open-floating true
 }
 
-// Open video players as floating by default.
 window-rule {
     match app-id=r#"^mpv$"#
     open-floating true

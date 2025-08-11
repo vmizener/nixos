@@ -1,0 +1,27 @@
+// Side Bar
+.sidebar {
+    background-color: rgba($background-layer-1, 0.9);
+    border-radius: 0 12px 12px 0;
+}
+
+// Power Menu
+.powermenu {
+    font-family: $font-icons;
+    font-size: 2em;
+    font-weight: bold;
+}
+.button-powermenu-shutdown,
+.button-powermenu-suspend {
+    padding: $bar-vpad $bar-hpad;
+    margin: $bar-vmargin $bar-hmargin;
+}
+.button-powermenu-shutdown {
+    color: $red;
+}
+.button-powermenu-lock {
+    color: $gray;
+}
+.button-powermenu-suspend {
+    color: $blue;
+}
+

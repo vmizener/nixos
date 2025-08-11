@@ -8,6 +8,9 @@
       Install = {
         WantedBy = [ "default.target" ];
       };
+      Unit = {
+        After = [ "graphical-session.target" ];
+      };
       Service = {
         Type = "simple";
         ExecStart = "${inputs.swww.packages.${pkgs.system}.swww}/bin/swww-daemon";

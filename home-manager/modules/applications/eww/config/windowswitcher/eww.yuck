@@ -1,0 +1,29 @@
+;;;;;;;;;;;;;
+;; Windows ;;
+;;;;;;;;;;;;;
+
+(defvar var "1")
+(defwindow windowswitcher
+  ;:monitor {./run workspace::list_by_output | jq -r 'flatten | .[] | select(.focused==true) | .output'}
+  :geometry (geometry
+              :anchor "center")
+  ; Wayland props
+  :stacking "overlay"
+  (windowselection))
+
+;;;;;;;;;;;;;
+;; Widgets ;;
+;;;;;;;;;;;;;
+
+(defvar bool_windowselection-visible true)
+(defpoll json_container-snapshot-paths
+  :interval "1s"
+  :run-while bool_windowselection-visible
+  `./run container::list_container_snapshots`)
+(defwidget windowselection []
+  (box
+    (for imagepath in json_container-snapshot-paths
+      (image
+        :path "${imagepath}"
+        :image-width 200
+        :image-height 100))))

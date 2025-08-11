@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+SCRIPTPATH="$HOME/scripts"
+# shellcheck source=./lib/core.sh
+source "$SCRIPTPATH/core.sh"
+
+# Source based on WM
+if ! [ -z "$SWAYSOCK" ]; then
+    # Detect Sway
+    XDG_CURRENT_DESKTOP=SWAY
+fi
+
+case "$XDG_CURRENT_DESKTOP" in
+    Hyprland)
+        WMLIB="${SCRIPTPATH}/hyprland.sh"
+        ;;
+    SWAY)
+        WMLIB="${SCRIPTPATH}/sway.sh"
+        ;;
+    *)
+        WMLIB="/dev/null"
+        ;;
+esac
+
+# shellcheck source=/dev/null
+source "$WMLIB"
+export ALL=(
+    $(cat $SCRIPTPATH/core.sh | grep ^function | cut -f2 -d' ' | tr -d '()')
+    $(cat $WMLIB | grep ^function | cut -f2 -d' ' | tr -d '()')
+)
+
+# Exec function directly if provided arguments
+if [[ "$#" -gt 0 ]] && [[ " ${ALL[*]} " =~ " $1 " ]]; then
+    # Directly call the first argument, with remaining arguments passed in
+    "$1" "${@:2}"
+else
+    >&2 echo "Valid functions:"
+    for func in "${ALL[@]}"; do
+        >&2 echo " - $func"
+    done
+fi

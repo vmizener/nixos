@@ -8,10 +8,8 @@
     systemd.user.services.ckb-next = {
       enable = true;
       description = "Corsair keyboard next service";
-      unitConfig = {
-        Type = "simple";
-      };
       serviceConfig = {
+        Type = "simple";
         ExecStart = "${pkgs.ckb-next}/bin/ckb-next -b";
         Restart = "on-failure";
         RestartSec = "3";

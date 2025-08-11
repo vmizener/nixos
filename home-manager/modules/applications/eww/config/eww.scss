@@ -1,0 +1,231 @@
+// Global
+*{
+  all: unset;
+}
+
+// Colors
+$background-layer-1: #0B0C17;
+$background-layer-2: #1B1C27;
+$foreground: #BFC9DB;
+$background-highlight: #9F999B;
+
+$black: #24283B;
+$gray: #565F89;
+$red: #F7768E;
+$green: #43AA9A;
+$yellow: #E0AF68;
+$blue: #7AA2F7;
+$magenta: #BB9AF7;
+$cyan: #7DCFFF;
+$white: #FFFFFF;
+
+$dark-red: #FA5856;
+$dark-green: #417a54;
+$dark-yellow: #B08205;
+$dark-blue: #045fb5;
+
+// Settings
+$font-icons: "Font Awesome 6 Free";
+$font-text: "Noto Mono";
+$font-mono: "Inconsolata";
+
+$bar-alpha: 0.7;
+$popup-alpha: 0.9;
+
+$bar-vpad: 0.1rem;
+$bar-hpad: 0.4rem;
+$bar-vmargin: 0.1rem;
+$bar-hmargin: 0.4rem;
+
+$window-item-pad: 1rem;
+$window-item-margin: 0.5rem;
+
+// Animations
+@keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
+}
+@keyframes fadeOut {
+   from {opacity: 1;}
+   to {opacity: 0;}
+}
+
+// Tooltips
+tooltip.background {
+    background-color: rgba($background-layer-1, $bar-alpha);
+    border-radius: 7px;
+    color: $foreground;
+}
+
+tooltip label {
+    font-family: $font-text;
+    font-size: 1rem;
+    margin: 0.1rem;
+    color: $white;
+}
+
+// General Use Classes
+.color-green,
+.color-active {
+    color: $green;
+}
+.color-dark-green,
+.color-full {
+    color: $dark-green;
+}
+.color-red,
+.color-alert,
+.color-disabled {
+    color: $red;
+}
+.color-dark-red,
+.color-critical {
+    color: $dark-red;
+}
+.color-dark-blue,
+.color-normal {
+    color: $dark-blue;
+}
+.color-yellow,
+.color-amp {
+    color: $yellow;
+}
+.color-dark-yellow,
+.color-warning {
+    color: $dark-yellow;
+}
+.color-gray,
+.color-inactive {
+    color: $gray;
+}
+.bg-dark-blue,
+.bg-normal {
+    background-color: $dark-blue;
+}
+.bg-dark-green,
+.bg-active {
+    background-color: $dark-green;
+}
+
+// Dock Containers
+.dockcontainer {
+    font-family: $font-text;
+    font-weight: bold;
+    font-size: 1rem;
+    background-color: $black;
+    border-radius: 7px;
+    padding: $bar-vpad $bar-hpad;
+    margin: $bar-vmargin $bar-hmargin;
+}
+.dockcontainer-button {
+    border-bottom-left-radius: 17px;
+    border-top-right-radius: 17px;
+    padding: 0.5rem;
+    margin: 0.5rem;
+}
+.dockcontainer-icon {
+    font-family: $font-icons;
+}
+.dockcontainer-supertext {
+    font-size: 1.8rem;
+}
+.dockcontainer-text {
+    font-size: 0.8rem;
+}
+.dockcontainer-subtext {
+    font-size: 0.6rem;
+}
+
+// Top Bar
+.top-bar {
+    background-color: rgba($background-layer-1, $bar-alpha);
+}
+
+// Side Panel
+.side-panel-container {
+    background-color: rgba($background-layer-1, $bar-alpha);
+    padding: $window-item-pad;
+    margin: $window-item-margin;
+}
+
+// Clock
+.clock {
+    font-family: $font-mono;
+    font-weight: bold;
+    font-size: 1.2rem;
+    padding: $bar-vpad $bar-hpad;
+    margin: $bar-vmargin $bar-hmargin;
+}
+
+// Audio
+.audio-control-pane {
+    font-family: $font-text;
+    font-weight: bold;
+}
+.audio-control-pane-box {
+    background-color: rgba($background-layer-1, $popup-alpha);
+    border-radius: 12px;
+    padding: $window-item-pad;
+    margin: $window-item-margin;
+}
+.audio-control-pane-config-button {
+    font-family: $font-icons;
+    font-size: 1em;
+}
+.audio-control-pane-sink-option-default {
+    color: $white;
+    background-color: rgba($black, $popup-alpha);
+    border-radius: 12px;
+}
+.audio-control-pane-sink-option {
+    color: $gray;
+}
+
+// Hamburger Menu
+.hamburgermenu {
+    font-family: $font-icons;
+    font-weight: bold;
+    font-size: 1.2rem;
+    padding: $bar-vpad $bar-hpad;
+    margin: $bar-vmargin $bar-hmargin;
+}
+
+// Workspaces
+.workspace-btn,
+.workspace-btn-visible,
+.workspace-btn-focus {
+    &:hover {
+        color: $red;
+    };
+    min-width: 20px;
+}
+.workspace-btn-visible {
+    color: $yellow;
+}
+.workspace-btn-focus {
+    color: $blue;
+}
+
+.systray {
+    margin-right: 10px;
+
+    menu {
+        padding: 5px 10px;
+        border-radius: 10px;
+        background-color: rgba($background-layer-2, $popup-alpha);
+
+        menuitem {
+            &:hover {
+                background-color: rgba($background-highlight, $popup-alpha);
+            };
+            margin: 1px 0;
+        }
+
+        separator {
+            margin: 6px 0;
+            min-height: 3px;
+            border-radius: 99px;
+            background-color: rgba($gray, 0.35);
+        }
+    }
+}

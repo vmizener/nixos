@@ -2,7 +2,10 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, lib, ... }: {
+{ config, pkgs, lib, ... }:
+let
+  username = "bao";
+in {
   imports = [
     ../common.nix
     ./hardware-configuration.nix
@@ -26,21 +29,30 @@
 
   services.displayManager.ly.enable = true;
 
-  virtualisation.docker.rootless = {
-    enable = true;
-    setSocketVariable = true;
+  virtualisation.docker = {
+    rootless = {
+      enable = true;
+      setSocketVariable = true;
+    };
+    autoPrune = {
+      enable = true;
+      dates = "weekly"; # Prune weekly
+      flags = [ "--all" "--volumes" ]; # Prune all unused images, containers, networks, and volumes
+      persistent = true;
+      randomizedDelaySec = "1hr"; # Random delay up to 1 hour
+    };
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.bao = {
+  users.users.${username} = {
     isNormalUser = true;
-    description = "bao";
+    description = "${username}";
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [];
     shell = pkgs.xonsh;
   };
   # Enable automatic login for the user.
-  services.getty.autologinUser = "bao";
+  services.getty.autologinUser = "${username}";
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
@@ -49,20 +61,4 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "24.05"; # Did you read the comment?
-
-  # programs.zsh = {
-  #   enable = true;
-  #   # history.size = 10000;
-  #
-  #   # enableCompletions = true;
-  #   # autosuggestions.enable = true;
-  #   # syntaxHighlighting.enable = true;
-  #
-  #   shellAliases = {
-  #     update = "sudo nixos-rebuild switch";
-  #
-  #     ll = "ls -l";
-  #     la = "ls -la";
-  #   };
-  # };
 }

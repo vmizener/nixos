@@ -41,12 +41,12 @@ def custom_keybindings(bindings, **kw):
             event.current_buffer.insert_text(buff.suggestion.text)
 
 aliases["cat"] = "bat"
+aliases["suspend"] = "systemctl suspend"
 abbrevs["cdr"] = "cd $(git rev-parse --show-toplevel)"
 abbrevs["ll"] = "ls -l"
 abbrevs["la"] = "ls -al"
 abbrevs["nhs"] = "nh os switch /etc/nixos"
 abbrevs["nhus"] = "nh os switch -u /etc/nixos"
 abbrevs["ns"] = "nix search nixpkgs"
-abbrevs["suspend"] = "systemctl suspend"
 
 # vim: set filetype=python:
