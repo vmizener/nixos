@@ -17,6 +17,8 @@
 
   dev.c.enable = true;
   dev.golang.enable = true;
+  dev.python.enable = true;
+  dev.sql.enable = true;
 
   services.clipman.enable = true;
   services.mako.enable = true;
@@ -24,8 +26,10 @@
   home.packages = with pkgs; [
     ani-cli
     animdl
+    cava
     eww
     mako
     neovim
+    spotify
   ];
 }

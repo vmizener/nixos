@@ -1,8 +1,12 @@
-{ config, lib, pkgs, ... }: {
+{ config, lib, pkgs, ... }:
+let
+  module = "c";
+  cfg = config.dev.${module};
+in {
   options = {
-    dev.c.enable = lib.mkEnableOption "c";
+    dev.${module}.enable = lib.mkEnableOption "${module}";
   };
-  config = lib.mkIf config.dev.c.enable {
+  config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [ libgcc ];
   };
 }

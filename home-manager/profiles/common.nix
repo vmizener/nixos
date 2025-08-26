@@ -1,12 +1,15 @@
 { config, flakePath, lib, pkgs, ... }: {
   home.packages = with pkgs; [
-    ranger
+    btop
+    fastfetch
     grim
-    slurp
-    wl-clipboard
+    htop
     mpv
     pavucontrol
+    ranger
+    slurp
     unzip
+    wl-clipboard
     wdisplays
     wev
     wofi
