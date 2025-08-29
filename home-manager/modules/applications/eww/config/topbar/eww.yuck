@@ -395,7 +395,7 @@
           (button
             :class {workspace.focused ? "workspace-btn-focus" :
                     workspace.visible ? "workspace-btn-visible" : "workspace-btn"}
-            :onclick "./run workspace::focus ${workspace.name}"
+            :onclick "./run workspace::focus ${workspace.key}"
             "${workspace.name}"))))))
 (deflisten json_workspaces :initial "[]" `./run workspace::focus_subscriber`)
 

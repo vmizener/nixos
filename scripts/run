@@ -1,20 +1,23 @@
 #!/usr/bin/env bash
-SCRIPTPATH="$HOME/scripts"
+SCRIPTPATH="$(dirname $(readlink -f ${BASH_SOURCE[0]}))"
 # shellcheck source=./lib/core.sh
 source "$SCRIPTPATH/core.sh"
 
-# Source based on WM
+# Detect Sway
 if ! [ -z "$SWAYSOCK" ]; then
-    # Detect Sway
-    XDG_CURRENT_DESKTOP=SWAY
+    XDG_CURRENT_DESKTOP=sway
 fi
 
-case "$XDG_CURRENT_DESKTOP" in
-    Hyprland)
-        WMLIB="${SCRIPTPATH}/hyprland.sh"
+# Use lowercase value of envvar
+case "${XDG_CURRENT_DESKTOP,,}" in
+    hyprland)
+        WMLIB="${SCRIPTPATH}/wm/hyprland.sh"
         ;;
-    SWAY)
-        WMLIB="${SCRIPTPATH}/sway.sh"
+    niri)
+        WMLIB="${SCRIPTPATH}/wm/niri.sh"
+        ;;
+    sway)
+        WMLIB="${SCRIPTPATH}/wm/sway.sh"
         ;;
     *)
         WMLIB="/dev/null"

@@ -29,7 +29,8 @@ function workspace::list_by_output() {
         "visible": (.id as \$id | "${VISIBLE_WORKSPACES}" | map(.==\$id) | any),
         "focused": (.id == "$(hyprctl activewindow -j | jq '.workspace.id')"),
         "output": .monitor,
-        "name" : .name,
+        "name": .name,
+        "key": .name,
     }" | jq -cs 'group_by(.output)'
 }
 
@@ -40,7 +41,7 @@ function workspace::focus_subscriber() {
             workspace::list_by_output
         done
 }
-#
+
 # function window::get_attributes() {
 #     # Usage:
 #     #     window::get_attributes [property|property=val ...]
