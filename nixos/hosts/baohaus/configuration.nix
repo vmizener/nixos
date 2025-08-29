@@ -11,21 +11,23 @@ in {
     ./hardware-configuration.nix
     ./packages.nix
 
-    ../../modules/applications/browsers
-    ../../modules/applications/gaming.nix
-    ../../modules/applications/utilities
+    ../../modules/core
     ../../modules/shell/xonsh
     ../../modules/wm
   ];
   networking.hostName = "baohaus"; # Define your hostname.
 
-  browsers.firefox.enable = true;
-  browsers.zen.enable = true;
-  gaming.enable = true;
   shell.xonsh.enable = true;
+
   wm.sway.enable = true;
   wm.niri.enable = true;
-  utilities.ckb-next.enable = true;
+
+  core.ckb-next.enable = true;
+  core.gaming.enable = true;
+  core.thunar.enable = true;
+
+  core.firefox.enable = true;
+  core.zen.enable = true;
 
   services.displayManager.ly.enable = true;
 

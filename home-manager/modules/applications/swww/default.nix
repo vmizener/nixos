@@ -6,10 +6,12 @@
     home.packages = [ inputs.swww.packages.${pkgs.system}.swww ];
     systemd.user.services.swww = {
       Install = {
-        WantedBy = [ "default.target" ];
+        WantedBy = [ "graphical-session.target" ];
       };
       Unit = {
+        Description = "SWWW daemon";
         After = [ "graphical-session.target" ];
+        PartOf = [ "graphical-session.target" ];
       };
       Service = {
         Type = "simple";

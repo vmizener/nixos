@@ -31,5 +31,7 @@
     mako
     neovim
     spotify
+    spotify-player
+    spotify-tray
   ];
 }

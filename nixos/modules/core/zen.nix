@@ -1,6 +1,8 @@
 # See https://github.com/linuxmobile/kaku/blob/niri/home/software/browsers/zen.nix
 { inputs, pkgs, lib, config, ... }:
 let
+  mod = "zen";
+  cfg = config.core.${mod};
   # Create a wrapper script for zen-browser with Wayland enabled
   zenWithWayland = pkgs.symlinkJoin {
     name = "zen-browser-wayland";
@@ -13,9 +15,9 @@ let
   };
 in {
   options = {
-    browsers.zen.enable = lib.mkEnableOption "zen browser";
+    core.${mod}.enable = lib.mkEnableOption "${mod}";
   };
-  config = lib.mkIf config.browsers.zen.enable {
-    environment.systemPackages = [zenWithWayland];
+  config = lib.mkIf cfg.enable {
+    environment.systemPackages = [ zenWithWayland ];
   };
 }

@@ -1,9 +1,13 @@
-{ inputs, pkgs, lib, config, ... }: {
+{ inputs, pkgs, lib, config, ... }:
+let
+  mod = "ckb-next";
+  cfg = config.core.${mod};
+in {
   options = {
-    utilities.ckb-next.enable = lib.mkEnableOption "ckb-next";
+    core.${mod}.enable = lib.mkEnableOption "${mod}";
   };
-  config = lib.mkIf config.utilities.ckb-next.enable {
-    environment.systemPackages = [pkgs.ckb-next];
+  config = lib.mkIf cfg.enable {
+    environment.systemPackages = [ pkgs.ckb-next ];
     hardware.ckb-next.enable = true;
     systemd.user.services.ckb-next = {
       enable = true;
