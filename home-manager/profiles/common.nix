@@ -5,6 +5,7 @@
     grim
     htop
     mpv
+    nh
     pavucontrol
     ranger
     slurp

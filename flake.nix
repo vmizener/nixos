@@ -42,8 +42,7 @@
       config = { allowUnfree = true; };
     };
     extraSpecialArgs = { inherit flakePath inputs unstable-pkgs; };
-  in
-  {
+  in {
     # NixOS configuration entrypoint
     # Available through 'nixos-rebuild --flake .#your-hostname'
     nixosConfigurations = {
@@ -61,6 +60,14 @@
             };
           }
         ];
+      };
+    };
+    # Home-Manager configuration entrypoint
+    # Available through 'home-manager switch --flake .#your-hostname'
+    homeConfigurations = {
+      "rvonmizener@rvonmizener-glaptop" = home-manager.lib.homeManagerConfiguration {
+        inherit pkgs extraSpecialArgs;
+        modules = [ ./home-manager/profiles/rvonmizener.nix ];
       };
     };
   };
