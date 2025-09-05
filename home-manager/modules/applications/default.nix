@@ -2,6 +2,7 @@
   imports = [
     ./eww
     ./fuzzel
+    ./ignis
     ./kanshi
     ./kitty
     ./maestral

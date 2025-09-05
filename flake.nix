@@ -7,11 +7,22 @@
   # ====
   # `inputs` is an attribute set of all the dependencies of the flake.
   inputs = {
+    # Core
     nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-    # systems.url = "github:nix-systems/default";
+    systems.url = "github:nix-systems/default";
     home-manager = {
       url = "github:nix-community/home-manager/release-25.05";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # Flakes
+    ignis = {
+      url = "github:ignis-sh/ignis";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    ignisctl-rs = {
+      url = "github:linkfrg/ignisctl-rs";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     niri.url = "github:sodiboo/niri-flake";

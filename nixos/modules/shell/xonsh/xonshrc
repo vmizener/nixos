@@ -11,6 +11,7 @@ xontrib load fzf-widgets
 xontrib load prompt_vi_mode
 xontrib load sh
 
+$EDITOR = "nvim"
 
 $XONSH_COLOR_STYLE = "solarized-light"
 $XONSH_STYLE_OVERRIDES = {

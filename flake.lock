@@ -55,6 +55,68 @@
         "type": "github"
       }
     },
+    "ignis": {
+      "inputs": {
+        "ignis-gvc": "ignis-gvc",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1756645941,
+        "narHash": "sha256-6MzlT/KnrV4jlaYBq+biTH+enZctSdR3tFwMlwwjcrQ=",
+        "owner": "ignis-sh",
+        "repo": "ignis",
+        "rev": "35145a379b70a5ffdca79fade59a70f0dc0c8ff8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ignis-sh",
+        "repo": "ignis",
+        "type": "github"
+      }
+    },
+    "ignis-gvc": {
+      "inputs": {
+        "nixpkgs": [
+          "ignis",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1754064086,
+        "narHash": "sha256-ft5KvY2OYrWF+jEsfBL/Zx8Iuo2C10C6COk8wHwZw34=",
+        "owner": "ignis-sh",
+        "repo": "ignis-gvc",
+        "rev": "f2c9f10d8b49cc38106a2f07a51ea959c6aa4e63",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ignis-sh",
+        "repo": "ignis-gvc",
+        "type": "github"
+      }
+    },
+    "ignisctl-rs": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1754058301,
+        "narHash": "sha256-irXuwCfCvIqJwyH8xkMCkBT+eUs/lTCg0pm087Bh0Us=",
+        "owner": "linkfrg",
+        "repo": "ignisctl-rs",
+        "rev": "99a03a6ce8d1f1f85836b895d5b584ee2b73b27c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "linkfrg",
+        "repo": "ignisctl-rs",
+        "type": "github"
+      }
+    },
     "niri": {
       "inputs": {
         "niri-stable": "niri-stable",
@@ -214,11 +276,14 @@
     "root": {
       "inputs": {
         "home-manager": "home-manager",
+        "ignis": "ignis",
+        "ignisctl-rs": "ignisctl-rs",
         "niri": "niri",
         "nixpkgs": "nixpkgs_2",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "quickshell": "quickshell",
         "swww": "swww",
+        "systems": "systems_2",
         "zen-browser": "zen-browser"
       }
     },
@@ -265,6 +330,21 @@
       }
     },
     "systems": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    },
+    "systems_2": {
       "locked": {
         "lastModified": 1681028828,
         "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
