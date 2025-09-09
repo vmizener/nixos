@@ -310,7 +310,7 @@
 ;; Volume
 (defwidget statusbar-vol []
   (eventbox
-    :onclick "pactl set-sink-mute @DEFAULT_SINK@ toggle"
+    :onclick "./run audio::set_mute toggle"
     :onrightclick "./run eww::popup open audio-window"
     :onscroll `./run audio::set_mute no && [[ {} == 'up' ]] && pactl set-sink-volume @DEFAULT_SINK@ +5% || pactl set-sink-volume @DEFAULT_SINK@ -5%`
     (statusbar-entry

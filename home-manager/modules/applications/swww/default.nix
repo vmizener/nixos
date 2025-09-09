@@ -1,22 +1,38 @@
-{ config, inputs, lib, pkgs, ... }: {
+{ config, inputs, lib, pkgs, ... }:
+let
+  app = "swww";
+  cfg = config.apps.${app};
+in {
   options = {
-    apps.swww.enable = lib.mkEnableOption "swww";
+    apps.swww.enable = lib.mkEnableOption "${app}";
+    apps.swww.pkg = lib.mkOption {
+      type = lib.types.package;
+      default = inputs.swww.packages.${pkgs.system}.swww;
+      description = "SWWW package to use";
+    };
+    apps.swww.img = lib.mkOption {
+      type = lib.types.path;
+      default = ../../../../assets/media/waneela_pixel_city_art.gif;
+      description = "Image to display";
+    };
   };
-  config = lib.mkIf config.apps.swww.enable {
-    home.packages = [ inputs.swww.packages.${pkgs.system}.swww ];
+  config = lib.mkIf cfg.enable {
+    home.packages = [ cfg.pkg ];
     systemd.user.services.swww = {
       Install = {
         WantedBy = [ "graphical-session.target" ];
       };
       Unit = {
         Description = "SWWW daemon";
-        After = [ "graphical-session.target" ];
+        After = [ "graphical-session-pre.target" ];
         PartOf = [ "graphical-session.target" ];
       };
       Service = {
         Type = "simple";
-        ExecStart = "${inputs.swww.packages.${pkgs.system}.swww}/bin/swww-daemon";
-        RestartSec = "1";
+        ExecStart = "${cfg.pkg}/bin/swww-daemon";
+        ExecStartPost = "${cfg.pkg}/bin/swww img ${cfg.img}";
+        ExecStop = "${cfg.pkg}/bin/swww kill";
+        RestartSec = "3";
       };
     };
   };

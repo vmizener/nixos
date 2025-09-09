@@ -22,6 +22,7 @@
   # apps.maestral.enable = true;
   apps.niri.enable = true;
   # apps.quickshell.enable = true;
+  apps.ranger.enable = true;
   apps.swww.enable = true;
   # apps.torrra.enable = true;
   # apps.webtorrent.enable = true;

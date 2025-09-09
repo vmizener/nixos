@@ -2,11 +2,15 @@
 let
   app = "kanshi";
   cfg = config.apps.${app};
+  flakepath = "${config.home.sessionVariables.NH_FLAKE}";
+  execThemeReset = (builtins.toString (pkgs.writeShellScript "kanshi-theme-reset" ''
+    ${flakepath}/scripts/run theme::reset
+  ''));
 in {
   options = {
-    apps.${app}.enable = lib.mkEnableOption "${app}";
+    apps.kanshi.enable = lib.mkEnableOption "${app}";
   };
-  config = lib.mkIf config.apps.kanshi.enable {
+  config = lib.mkIf cfg.enable {
     home.packages = [ pkgs.kanshi ];
     services.kanshi = {
       enable = true;
@@ -26,6 +30,7 @@ in {
           profile.outputs = [
             { criteria = "$laptop"; status = "enable"; }
           ];
+          profile.exec = execThemeReset;
         }
         {
           profile.name = "baohaus";
@@ -33,6 +38,7 @@ in {
             { criteria = "Dell Inc. DELL U2415 CFV9N7CN28NL"; status = "enable"; position = "0,0"; }
             { criteria = "Dell Inc. DELL U2415 CFV9N7CN202L"; status = "enable"; position = "1920,0"; }
           ];
+          profile.exec = execThemeReset;
         }
         {
           profile.name = "tony";
@@ -40,8 +46,7 @@ in {
             { criteria = "Dell Inc. DELL P3223QE GC68F34"; status = "enable"; position = "0,0"; }
             { criteria = "$laptop"; status = "enable"; position = "740,2160"; }
           ];
-          # profile.exec = ''
-          # '';
+          profile.exec = execThemeReset;
         }
       ];
     };

@@ -16,21 +16,35 @@ in {
       "eww/eww.scss".source = config.lib.file.mkOutOfStoreSymlink "${ewwcfg}/eww.scss";
       "eww/modules".source = config.lib.file.mkOutOfStoreSymlink "${ewwcfg}/modules";
     };
-    systemd.user.services.eww = {
+    systemd.user.services.eww-daemon = {
       Install = {
-        WantedBy = [ "default.target" ];
+        WantedBy = [ "graphical-session.target" ];
       };
       Unit = {
-        After = [ "graphical-session.target" ];
+        Description = "Service daemon for EWW";
+        After = [ "graphical-session-pre.target" ];
+        PartOf = [ "graphical-session.target" ];
+      };
+      Service = {
+        Type = "forking";
+        ExecStart = "${pkgs.eww}/bin/eww daemon";
+        ExecStartPost = "${pkgs.eww}/bin/eww open topbar";
+        ExecStop = "${pkgs.eww}/bin/eww kill";
+        Restart = "on-failure";
+        RestartSec = 3;
+      };
+    };
+    systemd.user.services.eww-logger = {
+      Install = {
+        WantedBy = [ "graphical-session.target" ];
+      };
+      Unit = {
+        Description = "Logger for EWW";
+        Requires = [ "eww-daemon.service" ];
       };
       Service = {
         Type = "simple";
-        ExecStart = builtins.toString (pkgs.writeShellScript "eww-setup " ''
-          ${pkgs.eww}/bin/eww daemon
-          ${pkgs.eww}/bin/eww open topbar
-          ${pkgs.eww}/bin/eww logs
-        '');
-        ExecStop = "${pkgs.eww}/bin/eww kill";
+        ExecStart = "${pkgs.eww}/bin/eww logs";
         Restart = "on-failure";
         RestartSec = 3;
       };

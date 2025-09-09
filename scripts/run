@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 SCRIPTPATH="$(dirname $(readlink -f ${BASH_SOURCE[0]}))"
 # shellcheck source=./lib/core.sh
-source "$SCRIPTPATH/core.sh"
+for f in $SCRIPTPATH/modules/*; do source $f; done
 
 # Detect desktop if unset
 if [ -z "${XDG_CURRENT_DESKTOP}" ]; then
@@ -27,21 +27,26 @@ case "${XDG_CURRENT_DESKTOP,,}" in
         WMLIB="/dev/null"
         ;;
 esac
-
 # shellcheck source=/dev/null
 source "$WMLIB"
+
+function parseSource() {
+    cat "$1" | grep "^function [a-z]\+" | cut -f2 -d' ' | tr -d '()'
+}
 export ALL=(
-    $(cat $SCRIPTPATH/core.sh | grep ^function | cut -f2 -d' ' | tr -d '()')
-    $(cat $WMLIB | grep ^function | cut -f2 -d' ' | tr -d '()')
+    $(parseSource $WMLIB)
 )
+for f in $SCRIPTPATH/modules/*; do ALL+=($(parseSource $f)); done
 
 # Exec function directly if provided arguments
 if [[ "$#" -gt 0 ]] && [[ " ${ALL[*]} " =~ " $1 " ]]; then
     # Directly call the first argument, with remaining arguments passed in
     "$1" "${@:2}"
 else
+    IFS=$'\n' sorted=($(sort <<<"${ALL[*]}")); unset IFS
+    >&2 echo "Unknown function \"$1\""
     >&2 echo "Valid functions:"
-    for func in "${ALL[@]}"; do
+    for func in "${sorted[@]}"; do
         >&2 echo " - $func"
     done
 fi

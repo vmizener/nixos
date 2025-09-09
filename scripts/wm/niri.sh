@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+function mode::mode_subscriber() {
+    # Submap modes are not yet implemented in Niri
+    # See: https://github.com/YaLTeR/niri/issues/846
+    echo "default"
+}
+
 function workspace::focus() {
     local ACTIVE_OUTPUT="$(workspace::list_by_output | jq -r 'add | .[] | select(.focused) | .output')"
     local NEW_OUTPUT="$(echo $1 | cut -d: -f1)"
