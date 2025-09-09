@@ -524,6 +524,7 @@ binds {
     // Mod+Ctrl+WheelScrollDown cooldown-ms=150 { move-column-to-workspace-down; }
     // Mod+Ctrl+WheelScrollUp   cooldown-ms=150 { move-column-to-workspace-up; }
     Mod+Grave { focus-workspace-previous; }
+    Mod+Backslash { focus-workspace-previous; }
 
     Mod+WheelScrollRight      { focus-column-right; }
     Mod+WheelScrollLeft       { focus-column-left; }
@@ -669,6 +670,6 @@ binds {
     // Utilities
     Mod+E { spawn "makoctl" "dismiss" "-a"; }
     Mod+Shift+E { spawn "makoctl" "restore"; }
-    Mod+P { spawn "clipman" "pick" "--tool=wofi"; }
+    Mod+P { spawn-sh "cliphist list | fuzzel -d | cliphist decode | wl-copy"; }
 }
 

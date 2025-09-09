@@ -13,7 +13,7 @@
 ;;;;;;;;;;;;;
 
 (defwindow topbar
-  :monitor 1
+  :monitor '["<primary>", "eDP-1", 1, 0]'
   :geometry (geometry
               :x "0%"
               :y "0%"
@@ -27,7 +27,7 @@
 (defvar bool_topbar-visible true)
 
 (defwindow audio-window
-  :monitor 1
+  :monitor '["<primary>", "eDP-1", 1, 0]'
   :geometry (geometry
               :anchor "top right")
   ; Wayland props
@@ -36,7 +36,7 @@
 (defvar bool_audio-window-visible false)
 
 (defwindow side-panel
-  :monitor 1
+  :monitor '["<primary>", "eDP-1", 1, 0]'
   :geometry (geometry
               :anchor "top right")
   ; Wayland props
@@ -169,8 +169,8 @@
     (label :text "${json_weather.Icon} ${json_weather.TempF}°F")))
 (defpoll json_weather
   :initial '{"FeelsLikeC":"0","FeelsLikeF":"0","TempC":"0","TempF":"0","Loc":"N/A","Desc":"N/A","Icon" :""}'
-  :interval "5m"
-  `./run weather::status`)
+  :interval "10m"
+  `./run locale::weather`)
 
 ;;;;;;;;;;;;;
 ;; Status Bar

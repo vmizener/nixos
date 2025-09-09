@@ -342,12 +342,36 @@ function ime::mode_subscriber() {
 }
 
 #
-# Weather
+# Locale Info
 #
 
-function weather::status() {
+function locale::location() {
     # Usage:
-    #   weather::status
+    #   locale::location
+    #
+    # Returns location info based on IP
+    # Uses ipinfo.io free token (login with github)
+
+    local TOKEN="4c132caf0e6b7a"
+    local URL="ipinfo.io?token=${TOKEN}"
+    ERR_FILE="$HOME/.cache/eww-location.out"
+    o=$(curl -m 10 ${URL} 2>${ERR_FILE})
+    OK=$?
+    ERR=$(<${ERR_FILE})
+    rm ${ERR_FILE}
+    if (( $OK != 0 )); then
+        >&2 echo "[ERR] locale::location"
+        >&2 echo "$ERR"
+        >&2 echo "$o"
+        echo "{}"
+        return 1
+    fi
+    echo "$o" | jq -c
+}
+
+function locale::weather() {
+    # Usage:
+    #   locale::weather
     #
     # Returns local weather information
 
@@ -375,15 +399,17 @@ function weather::status() {
         "ThunderyShowers":     "⛈",
         "ThunderySnowShowers": "⛈"
     }'
-    local URL="v2d.wttr.in/?format=j2"
+
     ERR_FILE="$HOME/.cache/eww-weather.out"
+    local location=$(locale::location 2>${ERR_FILE} | jq '[.city, .region] | join("+") | gsub(" "; "+")')
+    local URL="v2d.wttr.in/${location}?format=j2"
     o=$(curl -m 10 ${URL} 2>${ERR_FILE})
     OK=$?
     ERR=$(<${ERR_FILE})
     rm ${ERR_FILE}
     # Handle when the service is down
     if (( $OK != 0 )) || [[ "$o" =~ "Unknown location" ]]; then
-        >&2 echo "[ERR] weather::status"
+        >&2 echo "[ERR] locale::weather"
         >&2 echo "$ERR"
         >&2 echo "$o"
         echo "{}"

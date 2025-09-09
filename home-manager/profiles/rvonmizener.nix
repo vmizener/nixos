@@ -12,7 +12,7 @@
     };
   };
 
-  # apps.eww.enable = true;
+  apps.eww.enable = true;
   apps.foot.enable = true;
   apps.fusuma.enable = true;
   apps.fuzzel.enable = true;
@@ -22,7 +22,8 @@
   # apps.maestral.enable = true;
   apps.niri.enable = true;
   # apps.quickshell.enable = true;
-  # apps.swww.enable = true;
+  apps.swww.enable = true;
+  # apps.torrra.enable = true;
   # apps.webtorrent.enable = true;
   #
   # dev.c.enable = true;
@@ -31,6 +32,7 @@
   # dev.sql.enable = true;
   #
   # services.clipman.enable = true;
+  services.cliphist.enable = true;
   # services.mako.enable = true;
   #
   # home.packages = with pkgs; [
