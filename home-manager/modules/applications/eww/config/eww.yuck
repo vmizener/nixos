@@ -1,2 +1,1 @@
-(include "./topbar/eww.yuck")
-;(include "./sidebar/eww.yuck")
+(include "./modules/main.yuck")

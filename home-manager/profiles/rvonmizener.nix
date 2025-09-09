@@ -17,7 +17,7 @@
   apps.fusuma.enable = true;
   apps.fuzzel.enable = true;
   apps.ignis.enable = true;
-  # apps.kanshi.enable = true;
+  apps.kanshi.enable = true;
   apps.kitty.enable = true;
   # apps.maestral.enable = true;
   apps.niri.enable = true;

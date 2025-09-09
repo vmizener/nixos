@@ -3,6 +3,7 @@ let
   app = "eww";
   cfg = config.apps.${app};
   flakepath = "${config.home.sessionVariables.NH_FLAKE}";
+  ewwcfg = "${flakepath}/home-manager/modules/applications/eww/config";
 in {
   options = {
     apps.${app}.enable = lib.mkEnableOption "${app}";
@@ -10,7 +11,10 @@ in {
   config = lib.mkIf cfg.enable {
     home.packages = [ pkgs.eww ];
     xdg.configFile = {
-      "eww".source = config.lib.file.mkOutOfStoreSymlink "${flakepath}/home-manager/modules/applications/eww/config";
+      "eww/run".source = config.lib.file.mkOutOfStoreSymlink "${flakepath}/scripts/run";
+      "eww/eww.yuck".source = config.lib.file.mkOutOfStoreSymlink "${ewwcfg}/eww.yuck";
+      "eww/eww.scss".source = config.lib.file.mkOutOfStoreSymlink "${ewwcfg}/eww.scss";
+      "eww/modules".source = config.lib.file.mkOutOfStoreSymlink "${ewwcfg}/modules";
     };
     systemd.user.services.eww = {
       Install = {
