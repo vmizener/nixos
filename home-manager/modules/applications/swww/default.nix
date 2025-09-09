@@ -1,4 +1,4 @@
-{ config, flakePath, inputs, lib, pkgs, ... }: {
+{ config, inputs, lib, pkgs, ... }: {
   options = {
     apps.swww.enable = lib.mkEnableOption "swww";
   };

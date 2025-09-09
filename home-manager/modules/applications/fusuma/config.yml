@@ -1,0 +1,25 @@
+# Make sure to be a member of the "INPUT" group to make use of Fusuma.
+# See "https://github.com/iberianpig/fusuma" for details.
+# Uses "fusuma-sendkey" plugin; install that too.
+
+swipe:
+  3:
+    left:
+      # History Back
+      sendkey: "LEFTALT+LEFT"
+    right:
+      # History Forward
+      sendkey: "LEFTALT+RIGHT"
+  # 4:
+  #   left:
+  #     # Switch to Next Workspace
+  #     sendkey: "LEFTMETA+RIGHTBRACE"
+  #   right:
+  #     # Switch to Previous Workspace
+  #     sendkey: "LEFTMETA+LEFTBRACE"
+
+interval:
+  swipe: 0.5
+
+threshold:
+  swipe: 0.5

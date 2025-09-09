@@ -1,6 +1,6 @@
 { config, lib, pkgs, ... }:
 let
-  app = "fuzzel";
+  app = "foot";
   cfg = config.apps.${app};
   flakepath = "${config.home.sessionVariables.NH_FLAKE}";
 in {
@@ -8,9 +8,9 @@ in {
     apps.${app}.enable = lib.mkEnableOption "${app}";
   };
   config = lib.mkIf cfg.enable {
-    home.packages = [ pkgs.fuzzel ];
+    home.packages = [ pkgs.foot ];
     xdg.configFile = {
-      "fuzzel/fuzzel.ini".source = config.lib.file.mkOutOfStoreSymlink "${flakepath}/home-manager/modules/applications/fuzzel/fuzzel.ini";
+      "foot/foot.ini".source = config.lib.file.mkOutOfStoreSymlink "${flakepath}/home-manager/modules/applications/foot/foot.ini";
     };
   };
 }

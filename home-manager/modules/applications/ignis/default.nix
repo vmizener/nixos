@@ -1,7 +1,8 @@
-{ config, flakePath, inputs, lib, pkgs, ... }:
+{ config, inputs, lib, pkgs, ... }:
 let
   app = "ignis";
   cfg = config.apps.${app};
+  flakepath = "${config.home.sessionVariables.NH_FLAKE}";
 in {
   # See: https://ignis-sh.github.io/ignis/latest/user/nix.html
   imports = [ inputs.ignis.homeManagerModules.default ];
@@ -31,7 +32,7 @@ in {
         dart-sass
       ]);
       xdg.configFile = {
-        "ignis".source = config.lib.file.mkOutOfStoreSymlink "${flakePath config}/home-manager/modules/applications/${app}/config";
+        "ignis".source = config.lib.file.mkOutOfStoreSymlink "${flakepath}/home-manager/modules/applications/${app}/config";
       };
     }
   );

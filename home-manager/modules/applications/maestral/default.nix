@@ -1,11 +1,16 @@
-{ config, flakePath, lib, pkgs, ... }: {
+{ config, lib, pkgs, ... }:
+let
+  app = "maestral";
+  cfg = config.apps.${app};
+  flakepath = "${config.home.sessionVariables.NH_FLAKE}";
+in {
   options = {
-    apps.maestral.enable = lib.mkEnableOption "maestral";
+    apps.${app}.enable = lib.mkEnableOption "${app}";
   };
   config = lib.mkIf config.apps.maestral.enable {
     home.packages = with pkgs; [ maestral maestral-gui ];
     xdg.configFile = {
-      "maestral/maestral.ini".source = config.lib.file.mkOutOfStoreSymlink "${flakePath config}/home-manager/modules/applications/maestral/maestral.ini";
+      "maestral/maestral.ini".source = config.lib.file.mkOutOfStoreSymlink "${flakepath}/home-manager/modules/applications/maestral/maestral.ini";
     };
     systemd.user.services.maestral = {
       Unit = {

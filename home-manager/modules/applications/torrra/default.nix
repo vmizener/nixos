@@ -1,4 +1,4 @@
-{ config, flakePath, lib, pkgs, unstable-pkgs, ... }: {
+{ config, lib, pkgs, unstable-pkgs, ... }: {
   options = {
     apps.torrra.enable = lib.mkEnableOption "torrra";
   };

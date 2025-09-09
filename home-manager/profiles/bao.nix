@@ -1,4 +1,4 @@
-{ config, flakePath, lib, inputs, pkgs, ... }: {
+{ config, lib, inputs, pkgs, ... }: {
   imports = [
     ./common.nix
     ../modules/applications
@@ -38,6 +38,7 @@
   home = {
     sessionVariables = {
       EDITOR = "vim";
+      NH_FLAKE = "${config.home.homeDirectory}/config/";
     };
   };
 }

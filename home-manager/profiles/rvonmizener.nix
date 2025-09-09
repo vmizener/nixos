@@ -1,18 +1,26 @@
-{ config, flakePath, lib, inputs, pkgs, ... }: {
+{ config, lib, inputs, pkgs, ... }: {
   imports = [
     ./common.nix
     ../modules/applications
     ../modules/dev
   ];
-  home.username = "rvonmizener";
-  home.homeDirectory = "/home/rvonmizener";
+  home = {
+    username = "rvonmizener";
+    homeDirectory = "/home/rvonmizener";
+    sessionVariables = {
+      NH_FLAKE = "${config.home.homeDirectory}/.config/home-manager";
+    };
+  };
 
   # apps.eww.enable = true;
-  # apps.fuzzel.enable = true;
+  apps.foot.enable = true;
+  apps.fusuma.enable = true;
+  apps.fuzzel.enable = true;
+  apps.ignis.enable = true;
   # apps.kanshi.enable = true;
-  # apps.kitty.enable = true;
+  apps.kitty.enable = true;
   # apps.maestral.enable = true;
-  # apps.niri.enable = true;
+  apps.niri.enable = true;
   # apps.quickshell.enable = true;
   # apps.swww.enable = true;
   # apps.webtorrent.enable = true;

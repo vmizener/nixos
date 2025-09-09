@@ -1,6 +1,8 @@
 { ... }: {
   imports = [
     ./eww
+    ./foot
+    ./fusuma
     ./fuzzel
     ./ignis
     ./kanshi

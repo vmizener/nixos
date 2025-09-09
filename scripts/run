@@ -3,9 +3,13 @@ SCRIPTPATH="$(dirname $(readlink -f ${BASH_SOURCE[0]}))"
 # shellcheck source=./lib/core.sh
 source "$SCRIPTPATH/core.sh"
 
-# Detect Sway
-if ! [ -z "$SWAYSOCK" ]; then
-    XDG_CURRENT_DESKTOP=sway
+# Detect desktop if unset
+if [ -z "${XDG_CURRENT_DESKTOP}" ]; then
+    if ! [ -z "$SWAYSOCK" ]; then
+        XDG_CURRENT_DESKTOP=sway
+    elif ! [ -z "$NIRI_SOCKET" ]; then
+        XDG_CURRENT_DESKTOP=niri
+    fi
 fi
 
 # Use lowercase value of envvar

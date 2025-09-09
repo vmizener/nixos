@@ -1,6 +1,7 @@
-{ config, flakePath, lib, pkgs, ... }: {
+{ config, lib, pkgs, ... }: {
   home.packages = with pkgs; [
     btop
+    dex
     fastfetch
     grim
     htop
@@ -18,9 +19,6 @@
   ];
 
   home = {
-    sessionVariables = {
-      NH_FLAKE = flakePath config;
-    };
     stateVersion = "23.05"; # Please read the comment before changing.
     enableNixpkgsReleaseCheck = true;
   };

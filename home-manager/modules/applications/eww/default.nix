@@ -1,14 +1,16 @@
-{ config, flakePath, inputs, lib, pkgs, ... }:
+{ config, inputs, lib, pkgs, ... }:
 let
-  cfg = config.apps.eww;
+  app = "eww";
+  cfg = config.apps.${app};
+  flakepath = "${config.home.sessionVariables.NH_FLAKE}";
 in {
   options = {
-    apps.eww.enable = lib.mkEnableOption "eww";
+    apps.${app}.enable = lib.mkEnableOption "${app}";
   };
   config = lib.mkIf cfg.enable {
     home.packages = [ pkgs.eww ];
     xdg.configFile = {
-      "eww".source = config.lib.file.mkOutOfStoreSymlink "${flakePath config}/home-manager/modules/applications/eww/config";
+      "eww".source = config.lib.file.mkOutOfStoreSymlink "${flakepath}/home-manager/modules/applications/eww/config";
     };
     systemd.user.services.eww = {
       Install = {

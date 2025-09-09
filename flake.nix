@@ -43,7 +43,6 @@
   outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, ... }@inputs:
   let
     system = "x86_64-linux";
-    flakePath = config: "${config.home.homeDirectory}/config";
     pkgs = import nixpkgs {
       inherit system;
       config = { allowUnfree = true; };
@@ -52,7 +51,7 @@
       inherit system;
       config = { allowUnfree = true; };
     };
-    extraSpecialArgs = { inherit flakePath inputs unstable-pkgs; };
+    extraSpecialArgs = { inherit self inputs unstable-pkgs; };
   in {
     # NixOS configuration entrypoint
     # Available through 'nixos-rebuild --flake .#your-hostname'
