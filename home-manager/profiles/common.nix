@@ -8,7 +8,6 @@
     mpv
     nh
     pavucontrol
-    ranger
     slurp
     unzip
     wl-clipboard

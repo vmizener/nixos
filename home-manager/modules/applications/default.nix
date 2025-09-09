@@ -10,6 +10,7 @@
     ./maestral
     ./niri
     ./quickshell
+    ./ranger
     ./swww
     ./torrra
     ./webtorrent

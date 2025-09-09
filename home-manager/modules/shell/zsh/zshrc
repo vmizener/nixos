@@ -99,3 +99,4 @@ zstyle ':fzf-tab:*' fzf-flags --bind=space:accept
 # Aliases
 alias ls='ls --color'
 alias vi='nvim'
+alias cdr='cd $(git rev-parse --show-toplevel)'
