@@ -3,6 +3,7 @@
     ./common.nix
     ../modules/applications
     ../modules/dev
+    ../modules/shell
   ];
 
   apps.eww.enable = true;
@@ -20,6 +21,8 @@
   dev.golang.enable = true;
   dev.python.enable = true;
   dev.sql.enable = true;
+
+  shell.zsh.enable = true;
 
   services.clipman.enable = true;
   services.mako.enable = true;
