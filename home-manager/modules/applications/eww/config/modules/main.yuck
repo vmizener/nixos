@@ -452,8 +452,8 @@
   (eventbox
     :onclick {(json_large-button-states?.["${id}"] ?: false) ?
                 (int_large-button-delay < 100 ? "" : "${onclick}") :
-                "./run eww::jq-update json_large-button-states '.${id} = true' && ./run eww::counter int_large-button-delay start"}
-    :onhoverlost "./run eww::jq-update json_large-button-states '.${id} = false' && ./run eww::counter int_large-button-delay reset"
+                "./run eww::jq_update json_large-button-states '.${id} = true' && ./run eww::counter int_large-button-delay start"}
+    :onhoverlost "./run eww::jq_update json_large-button-states '.${id} = false' && ./run eww::counter int_large-button-delay reset"
     :hexpand true
     (overlay
       (revealer

@@ -27,11 +27,11 @@ function utils::init() {
 
     PATH="."
     PATH="$PATH:$HOME/.nix-profile/bin"
+    PATH="$PATH:$HOME/.local/state/nix/profiles/home-manager/home-path/bin"
     PATH="$PATH:$HOME/.local/bin"
     PATH="$PATH:$HOME/.cargo/bin"
     PATH="$PATH:$HOME/go/bin"
     PATH="$PATH:/run/current-system/sw/bin"
-    PATH="$PATH:/usr/local/sbin"
     PATH="$PATH:/usr/local/sbin"
     PATH="$PATH:/usr/local/bin"
     PATH="$PATH:/usr/sbin"
@@ -43,7 +43,7 @@ function utils::init() {
 
 function utils::log() {
     # Usage:
-    #     utils::log [-o LOGFILE] [message]
+    #     utils::log [-o LOGFILE] [-c CONTEXT] [message]
     #     [command-with-output] | utils::log
     #
     # Writes messages to the log file.
@@ -61,12 +61,9 @@ function utils::log() {
     #
     # Flags:
     # -o [LOGFILE]      Specify an output other than the default logfile
+    # -c [CONTEXT]      Specify a context, if not the immediate caller
 
     local context=""
-    if [[ "${#FUNCNAME[@]}" -gt 1 ]]; then
-        context=" [${FUNCNAME[1]}]"
-    fi
-    local prefix="[$(date '+%B %d %H:%M')]${context}"
     local message=""
     local output="$UTILS_LOGPATH"
     while [[ "$#" -gt 0 ]]; do
@@ -74,6 +71,11 @@ function utils::log() {
             -o)
                 shift
                 output=$1
+                shift
+            ;;
+            -c)
+                shift
+                context=$1
                 shift
             ;;
             -*|--*)
@@ -86,6 +88,11 @@ function utils::log() {
             ;;
         esac
     done
+
+    if [[ -z "${context}" ]] && [[ "${#FUNCNAME[@]}" -gt 1 ]]; then
+        context=" [${FUNCNAME[1]}]"
+    fi
+    local prefix="[$(date '+%B %d %H:%M')]${context}"
 
     if [[ -t 0 ]]; then
         # If stdin isn't connected to a terminal (e.g. a pipe), dump immediately
@@ -108,26 +115,7 @@ function utils::err() {
     if [[ "${#FUNCNAME[@]}" -gt 1 ]]; then
         context=" [${FUNCNAME[1]}]"
     fi
-    local message="[$(date '+%B %d %H:%M')] [ERROR]${context}"
-    local output="$UTILS_LOGPATH"
-    while [[ "$#" -gt 0 ]]; do
-        case "$1" in
-            -o)
-                shift
-                output=$1
-                shift
-            ;;
-            -*|--*)
-                >&2 echo "Unknown option $i"
-                return 1
-            ;;
-            *)
-                message+=" $1"
-                shift
-            ;;
-        esac
-    done
-    >&2 echo "${message}" 2> >(tee -a "${output}" >&2)
+    utils::log -c "${context}" "[ERROR]" >/dev/stderr
 }
 
 function utils::exists() {

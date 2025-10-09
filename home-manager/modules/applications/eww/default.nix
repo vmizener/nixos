@@ -26,25 +26,12 @@ in {
         PartOf = [ "graphical-session.target" ];
       };
       Service = {
-        Type = "forking";
-        ExecStart = "${pkgs.eww}/bin/eww daemon";
-        ExecStartPost = "${pkgs.eww}/bin/eww open topbar";
-        ExecStop = "${pkgs.eww}/bin/eww kill";
-        Restart = "on-failure";
-        RestartSec = 3;
-      };
-    };
-    systemd.user.services.eww-logger = {
-      Install = {
-        WantedBy = [ "graphical-session.target" ];
-      };
-      Unit = {
-        Description = "Logger for EWW";
-        Requires = [ "eww-daemon.service" ];
-      };
-      Service = {
         Type = "simple";
-        ExecStart = "${pkgs.eww}/bin/eww logs";
+        ExecStart = (builtins.toString (pkgs.writeShellScript "eww-service" ''
+          ${pkgs.eww}/bin/eww daemon
+          ${flakepath}/scripts/run eww::keep_window_open topbar
+        ''));
+        ExecStop = "${pkgs.eww}/bin/eww kill";
         Restart = "on-failure";
         RestartSec = 3;
       };

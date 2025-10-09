@@ -1,12 +1,45 @@
-function eww::jq-update() {
+function eww::clear_cache() {
     # Usage:
-    #   eww::jq-update VAR JQ_CMD
+    #   eww::clear_cache
+    #
+    # Clears the user cache of any temp files relevant to EWW
+
+    local cache="${XDG_CACHE_HOME:-$HOME/.cache}"
+    if [[ -d "${cache}" ]]; then
+        rm ${cache}/eww*.{lock,counter} 2>&1 | utils::err
+    fi
+}
+
+function eww::keep_window_open() {
+    # Usage:
+    #   eww::keep_window_open WINDOW
+    #
+    # Continuously polls EWW's active windows to ensure WINDOW is open.
+    # If not, opens it.
+
+    utils::init
+    local WINDOW="$1"
+    local DELAY=1
+    while true; do
+        eww active-windows | grep "${WINDOW}" >/dev/null
+        if [[ $? != 0 ]]; then
+            utils::log "Re-opening window "${WINDOW}""
+            eww::clear_cache >/dev/null
+            eww open "${WINDOW}"
+        fi
+        sleep "${DELAY}"
+    done
+}
+
+function eww::jq_update() {
+    # Usage:
+    #   eww::jq_update VAR JQ_CMD
     #
     # Update an EWW variable by passing it through a JQ command
     # E.g.
     #   eww update "var={}"
     #   eww get var                             # Prints '{}'
-    #   ./run eww::jq-update var ".a = true"
+    #   ./run eww::jq_update var ".a = true"
     #   eww get var                             # Prints '{"a": true}'
     #
     # If JQ returns an error, the variable is not updated
