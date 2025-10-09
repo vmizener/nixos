@@ -7,6 +7,7 @@
   ];
 
   apps.eww.enable = true;
+  apps.foot.enable = true;
   apps.fuzzel.enable = true;
   apps.ignis.enable = true;
   apps.kanshi.enable = true;
