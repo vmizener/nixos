@@ -35,15 +35,15 @@ in {
         {
           profile.name = "baohaus";
           profile.outputs = [
-            { criteria = "Dell Inc. DELL U2415 CFV9N7CN28NL"; status = "enable"; position = "0,0"; }
-            { criteria = "Dell Inc. DELL U2415 CFV9N7CN202L"; status = "enable"; position = "1920,0"; }
+            { criteria = "Dell Inc. DELL U2415 CFV9N7CN28NL"; status = "enable"; position = "0,0"; scale = 1.0; }
+            { criteria = "Dell Inc. DELL U2415 CFV9N7CN202L"; status = "enable"; position = "1920,0"; scale = 1.0; }
           ];
           profile.exec = execThemeReset;
         }
         {
           profile.name = "tony";
           profile.outputs = [
-            { criteria = "Dell Inc. DELL P3223QE GC68F34"; status = "enable"; position = "0,0"; }
+            { criteria = "Dell Inc. DELL P3223QE GC68F34"; status = "enable"; position = "0,0"; scale = 1.0; }
             { criteria = "$laptop"; status = "enable"; position = "740,2160"; }
           ];
           profile.exec = execThemeReset;

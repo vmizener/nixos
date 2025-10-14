@@ -28,32 +28,81 @@ function locale::weather() {
     #
     # Returns local weather information
 
-    local SYMBOLS='{
-        "Unknown":             "✨",
-        "Clear":               "☀️",
-        "Cloudy":              "☁️",
-        "VeryCloudy":          "☁️",
-        "Fog":                 "🌫",
-        "Mist":                "🌫",
-        "HeavyRain":           "🌧",
-        "HeavyShowers":        "🌧",
-        "HeavySnow":           "❄️",
-        "HeavySnowShowers":    "❄️",
-        "LightRain":           "🌦",
-        "LightShowers":        "🌦",
-        "LightSleet":          "🌧",
-        "LightSleetShowers":   "🌧",
-        "LightSnow":           "🌨",
-        "LightSnowShowers":    "🌨",
-        "Overcast":            "☁️",
-        "PartlyCloudy":        "⛅️",
-        "Sunny":               "☀️",
-        "ThunderyHeavyRain":   "🌩",
-        "ThunderyShowers":     "⛈",
-        "ThunderySnowShowers": "⛈"
+    # See wttr.in constants for code/icon mappings
+    # https://github.com/chubin/wttr.in/blob/master/lib/constants.py
+    local WEATHER_CODES='{
+        "113": "Sunny",
+        "116": "PartlyCloudy",
+        "119": "Cloudy",
+        "122": "VeryCloudy",
+        "143": "Fog",
+        "176": "LightShowers",
+        "179": "LightSleetShowers",
+        "182": "LightSleet",
+        "185": "LightSleet",
+        "200": "ThunderyShowers",
+        "227": "LightSnow",
+        "230": "HeavySnow",
+        "248": "Fog",
+        "260": "Fog",
+        "263": "LightShowers",
+        "266": "LightRain",
+        "281": "LightSleet",
+        "284": "LightSleet",
+        "293": "LightRain",
+        "296": "LightRain",
+        "299": "HeavyShowers",
+        "302": "HeavyRain",
+        "305": "HeavyShowers",
+        "308": "HeavyRain",
+        "311": "LightSleet",
+        "314": "LightSleet",
+        "317": "LightSleet",
+        "320": "LightSnow",
+        "323": "LightSnowShowers",
+        "326": "LightSnowShowers",
+        "329": "HeavySnow",
+        "332": "HeavySnow",
+        "335": "HeavySnowShowers",
+        "338": "HeavySnow",
+        "350": "LightSleet",
+        "353": "LightShowers",
+        "356": "HeavyShowers",
+        "359": "HeavyRain",
+        "362": "LightSleetShowers",
+        "365": "LightSleetShowers",
+        "368": "LightSnowShowers",
+        "371": "HeavySnowShowers",
+        "374": "LightSleetShowers",
+        "377": "LightSleet",
+        "386": "ThunderyShowers",
+        "389": "ThunderyHeavyRain",
+        "392": "ThunderySnowShowers",
+        "395": "HeavySnowShowers"
+    }'
+    local WEATHER_SYMBOLS='{
+        "Unknown":              "✨",
+        "Cloudy":               "☁️",
+        "Fog":                  "🌫",
+        "HeavyRain":            "🌧",
+        "HeavyShowers":         "🌧",
+        "HeavySnow":            "❄️",
+        "HeavySnowShowers":     "❄️",
+        "LightRain":            "🌦",
+        "LightShowers":         "🌦",
+        "LightSleet":           "🌧",
+        "LightSleetShowers":    "🌧",
+        "LightSnow":            "🌨",
+        "LightSnowShowers":     "🌨",
+        "PartlyCloudy":         "⛅️",
+        "Sunny":                "☀️",
+        "ThunderyHeavyRain":    "🌩",
+        "ThunderyShowers":      "⛈",
+        "ThunderySnowShowers":  "⛈",
+        "VeryCloudy":           "☁️"
     }'
 
-    ERR_FILE="$HOME/.cache/eww-weather.out"
+    ERR_FILE="$HOME/.cache/locale-weather.out"
     local location=$(locale::location 2>${ERR_FILE} | jq '[.city, .region] | join("+") | gsub(" "; "+")')
     local URL="v2d.wttr.in/${location}?format=j1"
     o=$(curl -m 10 ${URL} 2>${ERR_FILE})
@@ -73,8 +122,10 @@ function locale::weather() {
     o_TempC=$(echo "$o" | jq -r '.current_condition[0].temp_C')
     o_TempF=$(echo "$o" | jq -r '.current_condition[0].temp_F')
     o_Loc="$(echo "$o" | jq -r '.nearest_area[0].areaName[0].value'), $(echo "$o" | jq -r '.nearest_area[0].region[0].value')"
+    o_weatherCode="$(echo "$o" | jq -r '.current_condition[0].weatherCode')"
+    iconKey=$(echo "$WEATHER_CODES" | jq -r ".[\"$(echo "$o_weatherCode")\"]")
+    o_weatherIco=$(echo "$WEATHER_SYMBOLS" | jq -r ".$(echo "$iconKey")")
     o_weatherDesc="$(echo "$o" | jq -r '.current_condition[0].weatherDesc[0].value' | sed 's/\([[:blank:]][[:lower:]]\)/\U\1/g')"
-    o_weatherIco=$(echo "$SYMBOLS" | jq -r ".$(echo "$o_weatherDesc" | sed 's/[[:blank:]]\(.\)/\1/g')")
     echo '{
         "FeelsLikeC": "'$o_FeelsLikeC'",
         "FeelsLikeF": "'$o_FeelsLikeF'",

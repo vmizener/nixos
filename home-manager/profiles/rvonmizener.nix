@@ -3,6 +3,7 @@
     ./common.nix
     ../modules/applications
     ../modules/dev
+    ../modules/shell
   ];
   home = {
     username = "rvonmizener";
@@ -36,7 +37,7 @@
   services.cliphist.enable = true;
   # services.mako.enable = true;
   #
-  # home.packages = with pkgs; [
+  home.packages = with pkgs; [
   #   ani-cli
   #   animdl
   #   cava
@@ -46,6 +47,6 @@
   #   spotify
   #   spotify-player
   #   spotify-tray
-  # ];
+  ];
 }
 

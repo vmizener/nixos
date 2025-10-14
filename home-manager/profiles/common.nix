@@ -2,6 +2,7 @@
   home.packages = with pkgs; [
     btop
     dex
+    eza
     fastfetch
     grim
     htop
@@ -9,6 +10,7 @@
     nh
     pavucontrol
     slurp
+    timg
     unzip
     wl-clipboard
     wdisplays

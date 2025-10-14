@@ -32,7 +32,6 @@
     ani-cli
     animdl
     cava
-    eww
     mako
     neovim
     spotify
