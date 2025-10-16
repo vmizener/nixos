@@ -4,6 +4,7 @@
     ./firefox.nix
     ./gaming.nix
     ./thunar.nix
+    ./virtualization.nix
     ./zen.nix
   ];
 }

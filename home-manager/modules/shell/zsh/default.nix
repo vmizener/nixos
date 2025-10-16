@@ -11,10 +11,10 @@ in {
     programs.zsh = {
       enable = true;
       dotDir = ".config/zsh";
-      initContent = lib.mkOrder 550 "${builtins.readFile ./zshrc}";
-      initExtra = ''
-        [[ -f "${homeManagerSessionVars}" ]] && source "${homeManagerSessionVars}"
-      '';
+      initContent = lib.strings.concatStringsSep "\n" [
+        ''[[ -f "${homeManagerSessionVars}" ]] && source "${homeManagerSessionVars}"''
+        "${builtins.readFile ./zshrc}"
+      ];
     };
     programs.fzf.enableZshIntegration = true;
   };

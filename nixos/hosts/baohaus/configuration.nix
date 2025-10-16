@@ -4,6 +4,7 @@
 
 { config, pkgs, lib, ... }:
 let
+  hostname = "baohaus";
   username = "bao";
 in {
   imports = [
@@ -15,7 +16,7 @@ in {
     ../../modules/shell/xonsh
     ../../modules/wm
   ];
-  networking.hostName = "baohaus"; # Define your hostname.
+  networking.hostName = "${hostname}"; # Define your hostname.
 
   shell.xonsh.enable = true;
 
@@ -25,25 +26,15 @@ in {
   core.ckb-next.enable = true;
   core.gaming.enable = true;
   core.thunar.enable = true;
+  core.virtualization = {
+    enable = true;
+    users = [ "${username}" ];
+  };
 
   core.firefox.enable = true;
   core.zen.enable = true;
 
   services.displayManager.ly.enable = true;
-
-  virtualisation.docker = {
-    rootless = {
-      enable = true;
-      setSocketVariable = true;
-    };
-    autoPrune = {
-      enable = true;
-      dates = "weekly"; # Prune weekly
-      flags = [ "--all" "--volumes" ]; # Prune all unused images, containers, networks, and volumes
-      persistent = true;
-      randomizedDelaySec = "1hr"; # Random delay up to 1 hour
-    };
-  };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.${username} = {

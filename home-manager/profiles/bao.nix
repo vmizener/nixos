@@ -1,4 +1,7 @@
-{ config, lib, inputs, pkgs, ... }: {
+{ config, lib, inputs, pkgs, ... }:
+let
+  flakepath = "${config.home.homeDirectory}/config/";
+in {
   imports = [
     ./common.nix
     ../modules/applications
@@ -16,7 +19,10 @@
   apps.niri.enable = true;
   apps.quickshell.enable = true;
   apps.ranger.enable = true;
-  apps.swww.enable = true;
+  apps.swww = {
+    enable = true;
+    img = builtins.toPath "${flakepath}/assets/media/girls_outside_door.jpg";
+  };
   apps.webtorrent.enable = true;
 
   dev.c.enable = true;
@@ -41,8 +47,8 @@
   ];
   home = {
     sessionVariables = {
-      EDITOR = "vim";
-      NH_FLAKE = "${config.home.homeDirectory}/config/";
+      EDITOR = "nvim";
+      NH_FLAKE = "${flakepath}";
     };
   };
 }
