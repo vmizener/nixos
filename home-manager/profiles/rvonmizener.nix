@@ -3,6 +3,7 @@
     ./common.nix
     ../modules/applications
     ../modules/dev
+    ../modules/options
     ../modules/shell
   ];
   home = {
@@ -32,6 +33,7 @@
   # dev.golang.enable = true;
   # dev.python.enable = true;
   # dev.sql.enable = true;
+  opts.i18n.enable = true;
   #
   # services.clipman.enable = true;
   services.cliphist.enable = true;

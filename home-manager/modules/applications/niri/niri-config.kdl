@@ -346,6 +346,19 @@ window-rule {
     open-fullscreen true
 }
 
+// Chrome
+window-rule {
+    // Set floating and transparency for Google Meet windows by default, but only when not in browser
+    match app-id="google-chrome" title=r#"^Meet -.*$"#
+    exclude app-id="google-chrome" title=r#"^Meet -.*- Google Chrome$"#
+
+    open-floating true
+    opacity 0.8
+    default-window-height{ proportion 0.5; }
+    default-column-width { proportion 0.5; }
+    default-floating-position x=10 y=10 relative-to="top-right"
+}
+
 // Steam windows
 window-rule {
     match app-id="steam"
@@ -372,8 +385,6 @@ window-rule {
 // Games
 window-rule {
     match app-id="dota2" title=r#"^Dota 2$"#
-    // default-window-height{ proportion 1.00; }
-    // default-column-width { proportion 1.00; }
     open-maximized true
     open-fullscreen true
 }
