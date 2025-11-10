@@ -24,8 +24,8 @@ in {
       };
       Unit = {
         Description = "SWWW daemon";
-        After = [ "graphical-session-pre.target" ];
-        PartOf = [ "graphical-session.target" ];
+        After = [ "graphical-session.target" ];
+        WantedBy = [ "graphical-session.target" ];
       };
       Service = {
         Type = "simple";

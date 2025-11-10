@@ -22,8 +22,8 @@ in {
       };
       Unit = {
         Description = "Service daemon for EWW";
-        After = [ "graphical-session-pre.target" ];
-        PartOf = [ "graphical-session.target" ];
+        After = [ "graphical-session.target" ];
+        WantedBy = [ "graphical-session.target" ];
       };
       Service = {
         Type = "simple";
