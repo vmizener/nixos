@@ -4,7 +4,7 @@
     ./foot
     ./fusuma
     ./fuzzel
-    ./ignis
+    # ./ignis
     ./kanshi
     ./kitty
     ./maestral

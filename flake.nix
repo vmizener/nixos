@@ -17,14 +17,14 @@
     };
 
     # Flakes
-    ignis = {
-      url = "github:ignis-sh/ignis";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    ignisctl-rs = {
-      url = "github:linkfrg/ignisctl-rs";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # ignis = {
+    #   url = "github:ignis-sh/ignis";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
+    # ignisctl-rs = {
+    #   url = "github:linkfrg/ignisctl-rs";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
     niri.url = "github:sodiboo/niri-flake";
     pyproject-nix = {
       url = "github:pyproject-nix/pyproject.nix";

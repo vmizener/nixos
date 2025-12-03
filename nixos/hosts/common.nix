@@ -16,6 +16,7 @@
     gparted
     killall
     mlocate
+    pstree
     tree
     usbutils
     vim

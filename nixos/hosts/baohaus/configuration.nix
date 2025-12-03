@@ -47,6 +47,32 @@ in {
   # Enable automatic login for the user.
   services.getty.autologinUser = "${username}";
 
+  # Enable early OOM killing
+  services.earlyoom = {
+    enable = true;
+
+    freeMemThreshold = 10; # Start monitoring when free memory is below 10%
+    freeMemKillThreshold = 5; # Kill processes when free memory is below 5%
+
+    # Enable desktop notifications
+    # Should only use on machines where all users are trusted
+    enableNotifications = true;
+
+    extraArgs = let
+      plist = l: "^(" + (lib.strings.concatStringsSep "|" l) + ")$";
+    in [
+      "--prefer"
+      (plist [
+        ".zen-wrapped"
+        "Web Content"
+      ])
+      "--avoid"
+      (plist [
+        "systemd" # Avoid killing systemd processes
+      ])
+    ];
+  };
+
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave
