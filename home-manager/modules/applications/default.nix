@@ -11,7 +11,7 @@
     ./niri
     ./quickshell
     ./ranger
-    ./swww
+    ./awww
     ./torrra
     ./webtorrent
   ];

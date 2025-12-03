@@ -18,7 +18,7 @@ in {
   apps.niri.enable = true;
   apps.quickshell.enable = true;
   apps.ranger.enable = true;
-  apps.swww = {
+  apps.awww = {
     enable = true;
     img = builtins.toPath "${flakepath}/assets/media/girls_outside_door.jpg";
   };

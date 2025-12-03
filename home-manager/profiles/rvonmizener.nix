@@ -25,7 +25,7 @@
   apps.niri.enable = true;
   # apps.quickshell.enable = true;
   apps.ranger.enable = true;
-  apps.swww.enable = true;
+  apps.awww.enable = true;
   # apps.torrra.enable = true;
   # apps.webtorrent.enable = true;
   #

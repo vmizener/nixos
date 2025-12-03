@@ -1,16 +1,16 @@
 function theme::set_wallpaper() {
     utils::init
-    if utils::exists swww; then
-        swww img "$1"
+    if utils::exists awww; then
+        awww img "$1"
     fi
 }
 
 function theme::reset() {
     utils::init
-    if utils::exists swww; then
+    if utils::exists awww; then
         echo "Reapplying theme" | utils::log
-        swww restore -a 2>&1    | utils::log
-        swww query 2>&1         | utils::log
+        awww restore -a 2>&1    | utils::log
+        awww query 2>&1         | utils::log
     else
         echo "No utils found"   | utils::err
     fi
