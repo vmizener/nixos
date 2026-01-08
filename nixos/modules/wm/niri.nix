@@ -3,7 +3,9 @@
     wm.niri.enable = lib.mkEnableOption "enables niri wm";
   };
   config = lib.mkIf config.wm.niri.enable {
+    nixpkgs.overlays = [ inputs.niri.overlays.niri ];
     programs.niri.enable = true;
+    programs.niri.package = pkgs.niri-unstable;
     programs.uwsm.waylandCompositors = {
       enable = true;
       niri = {
