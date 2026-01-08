@@ -10,7 +10,7 @@ in {
   config = lib.mkIf cfg.enable {
     programs.zsh = {
       enable = true;
-      dotDir = ".config/zsh";
+      dotDir = "${config.xdg.configHome}/zsh";
       initContent = lib.strings.concatStringsSep "\n" [
         ''[[ -f "${homeManagerSessionVars}" ]] && source "${homeManagerSessionVars}"''
         "${builtins.readFile ./zshrc}"

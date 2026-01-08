@@ -27,6 +27,8 @@
             rev = "ed31f520fe4a62f6992e8d9181fc2ed018161015";
             hash = "sha256-9xCCfM1Rt0ESa8Bsq+CnImpGoS0zCFtVesJfB91+/7Q=";
           };
+          pyproject = true;
+          build-system = [ setuptools ];
         })
         (buildPythonPackage rec {
           pname = "xontrib-fzf-widgets";
@@ -37,6 +39,8 @@
             tag = "v"+version;
             hash = "sha256-lz0oiQSLCIQbnoQUi+NJwX82SbUvXJ+3dEsSbOb20q4=";
           };
+          pyproject = true;
+          build-system = [ setuptools ];
         })
         (buildPythonPackage rec {
           pname = "xontrib-sh";
@@ -47,6 +51,8 @@
             tag = version;
             hash = "sha256-KL/AxcsvjxqxvjDlf1axitgME3T+iyuW6OFb1foRzN8=";
           };
+          pyproject = true;
+          build-system = [ setuptools ];
         })
       ];
     };

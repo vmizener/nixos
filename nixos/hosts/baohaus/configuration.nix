@@ -23,7 +23,7 @@ in {
   wm.sway.enable = true;
   wm.niri.enable = true;
 
-  core.ckb-next.enable = true;
+  # core.ckb-next.enable = true;
   core.gaming.enable = true;
   core.thunar.enable = true;
   core.virtualization = {
