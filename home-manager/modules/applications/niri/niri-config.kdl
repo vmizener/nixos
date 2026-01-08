@@ -340,6 +340,13 @@ window-rule {
     open-floating true
 }
 
+// Dim inactive floating windows
+window-rule {
+    match is-focused=false is-floating=true
+    opacity 0.6
+}
+
+// MPV
 window-rule {
     match app-id=r#"^mpv$"#
     open-floating true
@@ -453,6 +460,9 @@ binds {
     // Mod-Shift-/, which is usually the same as Mod-?,
     // shows a list of important hotkeys.
     Mod+Shift+Slash { show-hotkey-overlay; }
+
+    // Toggle window opacity
+    Mod+Shift+O { toggle-window-rule-opacity; }
 
     // Suggested binds for running programs: terminal, app launcher, screen locker.
     // Mod+Return hotkey-overlay-title="Open a Terminal: kitty" { spawn "kitty"; }

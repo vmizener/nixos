@@ -17,7 +17,7 @@ in {
       # Traditional Chinese
       fcitx5-rime
       # Simplified Chinese
-      fcitx5-chinese-addons
+      qt6Packages.fcitx5-chinese-addons
       fcitx5-pinyin-zhwiki
     ];
 
