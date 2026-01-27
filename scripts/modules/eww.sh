@@ -23,7 +23,7 @@ function eww::keep_window_open() {
     while true; do
         eww active-windows | grep "${WINDOW}" >/dev/null
         if [[ $? != 0 ]]; then
-            utils::log "Re-opening window "${WINDOW}""
+            utils::log "Re-opening window \"${WINDOW}\""
             eww::clear_cache >/dev/null
             eww open "${WINDOW}"
         fi
