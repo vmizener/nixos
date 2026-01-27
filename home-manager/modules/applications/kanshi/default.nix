@@ -41,6 +41,14 @@ in {
           profile.exec = execThemeReset;
         }
         {
+          profile.name = "googs";
+          profile.outputs = [
+            { criteria = "Dell Inc. DELL P3223QE G2CXWN3"; status = "enable"; position = "0,0"; scale = 1.0; }
+            { criteria = "$laptop"; status = "enable"; position = "740,2160"; }
+          ];
+          profile.exec = execThemeReset;
+        }
+        {
           profile.name = "tony";
           profile.outputs = [
             { criteria = "Dell Inc. DELL P3223QE GC68F34"; status = "enable"; position = "0,0"; scale = 1.0; }
