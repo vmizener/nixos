@@ -19,15 +19,23 @@ function eww::keep_window_open() {
 
     utils::init
     local WINDOW="$1"
-    local DELAY=1
+    local DELAY=5
+    WINDOW_FILE="$HOME/.cache/eww-keep-window-$WINDOW.lock"
+    if [[ -f "${WINDOW_FILE}" ]]; then
+        # Do not duplicate this command if an instance is running
+        return
+    fi
+    touch "${WINDOW_FILE}"
     while true; do
         eww active-windows | grep "${WINDOW}" >/dev/null
         if [[ $? != 0 ]]; then
             utils::log "Re-opening window \"${WINDOW}\""
             eww::clear_cache >/dev/null
+            touch "${WINDOW_FILE}"  # Recreate window lock after cache wipe
             eww open "${WINDOW}"
         fi
         sleep "${DELAY}"
+    rm -f "${WINDOW_FILE}"
     done
 }
 
