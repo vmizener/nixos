@@ -9,7 +9,7 @@ let
     paths = [inputs.zen-browser.packages."${pkgs.system}".default];
     buildInputs = [pkgs.makeWrapper];
     postBuild = ''
-      wrapProgram $out/bin/zen \
+      wrapProgram $out/bin/zen-beta \
         --set MOZ_ENABLE_WAYLAND 1
     '';
   };

@@ -36,8 +36,9 @@
     };
     awww.url = "git+https://codeberg.org/LGFae/awww";
     zen-browser = {
-      url = "github:pfaj/zen-browser-flake";
-      inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:0xc000022070/zen-browser-flake";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.home-manager.follows = "home-manager";
     };
   };
 
