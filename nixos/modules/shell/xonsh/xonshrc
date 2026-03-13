@@ -1,6 +1,8 @@
 from prompt_toolkit.key_binding import KeyBindings
 from prompt_toolkit.keys import Keys
 
+source-bash "$HOME/.nix-profile/etc/profile.d/hm-session-vars.sh"
+
 xontrib load abbrevs
 xontrib load autovox
 xontrib load jedi

@@ -6,17 +6,21 @@ in {
     ./common.nix
     ../modules/applications
     ../modules/dev
+    ../modules/options
     ../modules/shell
   ];
 
   apps.eww.enable = true;
-  apps.foot.enable = true;
+  apps.foot = {
+    enable = true;
+    font = "HackNerdFont";
+  };
   apps.fuzzel.enable = true;
   apps.kanshi.enable = true;
   apps.kitty.enable = true;
   apps.maestral.enable = true;
+  apps.nvim.enable = true;
   apps.niri.enable = true;
-  # apps.quickshell.enable = true;
   apps.ranger.enable = true;
   apps.awww = {
     enable = true;
@@ -29,6 +33,8 @@ in {
   dev.python.enable = true;
   dev.sql.enable = true;
 
+  opts.fonts.enable = true;
+
   shell.zsh.enable = true;
 
   services.clipman.enable = true;
@@ -39,7 +45,6 @@ in {
     animdl
     cava
     mako
-    neovim
     spotify
     spotify-player
     spotify-tray

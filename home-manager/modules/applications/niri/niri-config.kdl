@@ -333,7 +333,7 @@ window-rule {
     // This app-id regular expression will work for both:
     // - host Firefox (app-id is "firefox")
     // - Flatpak Firefox (app-id is "org.mozilla.firefox")
-    match app-id=r#"^(firefox|zen)$"# title="^Picture-in-Picture$"
+    match app-id=r#"^(firefox|zen|zen-beta)$"# title="^Picture-in-Picture$"
     default-floating-position x=0 y=0 relative-to="top-right"
     default-column-width { proportion 0.5; }
     default-window-height { proportion 0.5; }
@@ -394,6 +394,15 @@ window-rule {
     match app-id="dota2" title=r#"^Dota 2$"#
     open-maximized true
     open-fullscreen true
+}
+window-rule {
+    match title=r#"^Mewgenics!$"#
+    open-maximized true
+    open-fullscreen true
+}
+window-rule {
+    match app-id=r#"^(Slay the Spire 2)$"#
+    open-floating true
 }
 
 // Other Apps

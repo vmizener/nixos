@@ -5,6 +5,7 @@
     eza
     fastfetch
     grim
+    hardinfo2
     htop
     mpv
     nh

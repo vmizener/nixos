@@ -1,4 +1,4 @@
-{ inputs, pkgs, lib, config, ... }:
+{ pkgs, lib, config, ... }:
 let
   mod = "virtualization";
   cfg = config.core.${mod};
@@ -32,7 +32,14 @@ in {
     users.users = lib.attrsets.genAttrs cfg.users (user: {
       extraGroups = [ "libvirtd" ];
     });
-    virtualisation.libvirtd.enable = true;
+    services.spice-vdagentd.enable = true;
+    virtualisation.libvirtd = {
+      enable = true;
+      qemu = {
+        swtpm.enable = true;
+        vhostUserPackages = [ pkgs.virtiofsd ];
+      };
+    };
     virtualisation.spiceUSBRedirection.enable = true;
   };
 }

@@ -9,6 +9,7 @@
     ./kitty
     ./maestral
     ./niri
+    ./nvim
     ./quickshell
     ./ranger
     ./awww
