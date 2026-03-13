@@ -33,6 +33,7 @@ in {
   dev.python.enable = true;
   dev.sql.enable = true;
 
+  opts.index.enable = true;
   opts.fonts.enable = true;
 
   shell.zsh.enable = true;

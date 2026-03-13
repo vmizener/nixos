@@ -1,6 +1,7 @@
 { ... }: {
   imports = [
-    ./i18n.nix
     ./fonts.nix
+    ./i18n.nix
+    ./index.nix
   ];
 }
