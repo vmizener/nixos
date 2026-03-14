@@ -15,6 +15,11 @@ in {
       default = "";
       description = "Email to set default config to";
     };
+    apps.git.enableGh = lib.mkOption {
+      type = lib.types.bool;
+      default = true; 
+      description = "Enable GH CLI tool";
+    };
   };
   config = lib.mkIf cfg.enable {
     programs.git = {
@@ -70,6 +75,12 @@ in {
         stash = {
           showPatch = true;
         };
+      };
+    };
+    programs.gh = {
+      enable = cfg.enableGh;
+      gitCredentialHelper = {
+        enable = cfg.enableGh;
       };
     };
   };
