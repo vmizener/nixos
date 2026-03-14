@@ -113,7 +113,7 @@ function utils::log() {
             echo -e "${prefix} ${msg} >>> ${line}" | tee -a "${output}"
             wrote_msg=true
         done < "/dev/stdin"
-        if ! wrote_msg; then
+        if ! $wrote_msg; then
             # Ensure at least one line is written, in case of an empty stdin pipe
             echo -e "${prefix} ${msg}" | tee -a "${output}"
         fi

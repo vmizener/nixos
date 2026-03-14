@@ -1,15 +1,21 @@
 { config, lib, pkgs, ... }: {
   home.packages = with pkgs; [
+    bat
     btop
+    delta
     dex
     eza
     fastfetch
+    fd
+    fzf
     grim
     hardinfo2
     htop
+    jq
     mpv
     nh
     pavucontrol
+    ripgrep
     slurp
     timg
     unzip

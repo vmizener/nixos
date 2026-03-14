@@ -20,7 +20,7 @@ in {
           output = {
             alias = "laptop";
             criteria = "eDP-1";
-            scale = 1.7;
+            scale = 1.0;
             position = "0,0";
           };
         }

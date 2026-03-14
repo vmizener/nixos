@@ -6,6 +6,9 @@
     ../modules/options
     ../modules/shell
   ];
+  targets.genericLinux.enable = true;
+  xdg.enable = true;
+  xdg.mime.enable = true;
   home = {
     username = "rvonmizener";
     homeDirectory = "/home/rvonmizener";
@@ -17,9 +20,9 @@
   apps.eww.enable = true;
   apps.foot.enable = true;
   apps.fusuma.enable = true;
-  apps.fuzzel.enable = true;
+  # apps.fuzzel.enable = true;
   apps.kanshi.enable = true;
-  apps.kitty.enable = true;
+  # apps.kitty.enable = true;
   # apps.maestral.enable = true;
   apps.niri.enable = true;
   # apps.quickshell.enable = true;
@@ -37,6 +40,7 @@
   # services.clipman.enable = true;
   services.cliphist.enable = true;
   # services.mako.enable = true;
+  shell.dms.enable = true;
   #
   home.packages = with pkgs; [
   #   ani-cli

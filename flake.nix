@@ -21,15 +21,21 @@
     };
 
     # Flakes
-    # ignis = {
-    #   url = "github:ignis-sh/ignis";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
-    # ignisctl-rs = {
-    #   url = "github:linkfrg/ignisctl-rs";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
+    awww.url = "git+https://codeberg.org/LGFae/awww";
+    dgop = {
+      url = "github:AvengeMedia/dgop";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    danksearch = {
+      url = "github:AvengeMedia/danksearch";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    dms = {
+      url = "github:AvengeMedia/DankMaterialShell/stable";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     niri.url = "github:sodiboo/niri-flake";
+    nixgl.url = "github:nix-community/nixGL";
     pyproject-nix = {
       url = "github:pyproject-nix/pyproject.nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -38,7 +44,6 @@
       url = "git+https://git.outfoxxed.me/outfoxxed/quickshell";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    awww.url = "git+https://codeberg.org/LGFae/awww";
     zen-browser = {
       url = "github:0xc000022070/zen-browser-flake";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
@@ -85,6 +90,10 @@
     # Available through 'home-manager switch --flake .#your-hostname'
     homeConfigurations = {
       "rvonmizener@rvonmizener-glaptop" = home-manager.lib.homeManagerConfiguration {
+        inherit pkgs extraSpecialArgs;
+        modules = [ ./home-manager/profiles/rvonmizener.nix ];
+      };
+      "rvonmizener@rvonmizener51" = home-manager.lib.homeManagerConfiguration {
         inherit pkgs extraSpecialArgs;
         modules = [ ./home-manager/profiles/rvonmizener.nix ];
       };
