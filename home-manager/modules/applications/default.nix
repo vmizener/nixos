@@ -5,6 +5,7 @@
     ./fusuma
     ./fuzzel
     # ./ignis
+    ./git
     ./kanshi
     ./kitty
     ./maestral
