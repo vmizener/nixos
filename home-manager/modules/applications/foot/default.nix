@@ -1,7 +1,6 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, ... }:
 let
   cfg = config.apps.foot;
-  flakepath = "${config.home.sessionVariables.NH_FLAKE}";
 in {
   options = {
     apps.foot.enable = lib.mkEnableOption "foot";
@@ -28,8 +27,10 @@ in {
       key-bindings = {
         font-increase = "Control+Shift+plus Control+Shift+equal Control+KP_Add";
         font-decrease = "Control+Shift+minus Control+KP_Subtract";
-        pipe-scrollback = [
-          "[sh -c \"f=$(mktemp) && cat - > $f; foot nvim $f -u NONE -c 'set nonumber nolist showtabline=0 foldcolumn=0 virtualedit=block' -c 'autocmd VimEnter * normal G' -c 'map q :qa!<CR>' -c 'map i <NOP>' -c 'map I <NOP>' -c 'map a <NOP>' -c 'map A <NOP>' -c 'set clipboard+=unnamedplus'; rm $f\"] Control+Shift+f"
+        pipe-scrollback = let
+          editor = if config.apps.nvim.enable then "nvim" else "vi";
+        in [
+          "[sh -c \"f=$(mktemp) && cat - > $f; foot ${editor} $f -u NONE -c 'set nonumber nolist showtabline=0 foldcolumn=0 virtualedit=block' -c 'autocmd VimEnter * normal G' -c 'map q :qa!<CR>' -c 'map i <NOP>' -c 'map I <NOP>' -c 'map a <NOP>' -c 'map A <NOP>' -c 'set clipboard+=unnamedplus'; rm $f\"] Control+Shift+f"
           "[sh -c \"cat - | foot fzf --no-sort --no-mouse -i --tac\"] Control+Shift+slash"
         ];
         show-urls-launch = "Control+Shift+o";
