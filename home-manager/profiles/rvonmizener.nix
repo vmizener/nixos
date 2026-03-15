@@ -29,6 +29,7 @@
   # apps.kitty.enable = true;
   # apps.maestral.enable = true;
   apps.niri.enable = true;
+  apps.nvim.enable = true;
   # apps.quickshell.enable = true;
   apps.ranger.enable = true;
   apps.awww.enable = true;
