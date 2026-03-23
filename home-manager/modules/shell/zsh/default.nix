@@ -8,6 +8,9 @@ in {
     shell.${pkg}.enable = lib.mkEnableOption "${pkg} shell";
   };
   config = lib.mkIf cfg.enable {
+    home.file.".p10k.zsh" = {
+      source = ./p10k.zsh;
+    };
     programs.zsh = {
       enable = true;
       dotDir = "${config.xdg.configHome}/zsh";

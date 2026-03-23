@@ -436,7 +436,7 @@ window-rule {
 // Example: enable rounded corners for all windows.
 // (This example rule is commented out with a "/-" in front.)
 /-window-rule {
-    geometry-corner-radius 12
+    geometry-corner-radius 8
     clip-to-geometry true
 }
 
@@ -449,11 +449,11 @@ layer-rule {
 }
 
 // Optionally, disable the workspace shadows in the overview.
-// overview {
-//     workspace-shadow {
-//         off
-//     }
-// }
+overview {
+    workspace-shadow {
+        off
+    }
+}
 
 binds {
     // Keys consist of modifiers separated by + signs, followed by an XKB key name
