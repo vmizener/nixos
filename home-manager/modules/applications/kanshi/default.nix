@@ -18,9 +18,11 @@ in {
         # Outputs
         {
           output = {
+            # x1 carbon gen12
             alias = "laptop";
-            criteria = "eDP-1";
-            scale = 1.0;
+            criteria = "Chimei Innolux Corporation 0x1450 Unknown";
+            scale = 1.5;
+            mode = "--custom 2880x1800@59.969Hz";  # custom configured via wdisplays
             position = "0,0";
           };
         }
@@ -37,6 +39,14 @@ in {
           profile.outputs = [
             { criteria = "Dell Inc. DELL U2415 CFV9N7CN28NL"; status = "enable"; position = "0,0"; scale = 1.0; }
             { criteria = "Dell Inc. DELL U2415 CFV9N7CN202L"; status = "enable"; position = "1920,0"; scale = 1.0; }
+          ];
+          profile.exec = execThemeReset;
+        }
+        {
+          profile.name = "cloe";
+          profile.outputs = [
+            { criteria = "$laptop"; status = "enable"; }
+            { criteria = "Lenovo Group Limited * *"; status = "enable"; position = "1920,0"; scale = 1.25; }
           ];
           profile.exec = execThemeReset;
         }
