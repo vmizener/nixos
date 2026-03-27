@@ -24,7 +24,10 @@
     useremail = "rvonmizener@google.com";
   };
   apps.kanshi.enable = true;
-  apps.niri.enable = true;
+  apps.niri = {
+    enable = true;
+    useFlake = true;
+  };
   apps.nvim.enable = true;
   apps.ranger.enable = true;
   apps.awww.enable = true;
