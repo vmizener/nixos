@@ -1,6 +1,6 @@
 { config, inputs, lib, pkgs, ... }:
 let
-  cfg = config.opts.fonts;
+  cfg = config.opts.index;
 in {
   imports = [
     inputs.nix-index-database.homeModules.nix-index
