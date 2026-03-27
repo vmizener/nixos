@@ -20,7 +20,10 @@ in {
   apps.kitty.enable = true;
   apps.maestral.enable = true;
   apps.nvim.enable = true;
-  apps.niri.enable = true;
+  apps.niri = {
+    enable = true;
+    setNixOS = true;
+  };
   apps.ranger.enable = true;
   apps.awww = {
     enable = true;
@@ -38,7 +41,8 @@ in {
 
   shell.zsh.enable = true;
 
-  services.clipman.enable = true;
+  # services.clipman.enable = true;
+  services.cliphist.enable = true;
   services.mako.enable = true;
 
   home.packages = with pkgs; [

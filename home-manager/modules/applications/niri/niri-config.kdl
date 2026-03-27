@@ -396,9 +396,9 @@ window-rule {
     open-fullscreen true
 }
 window-rule {
-    match title=r#"^Mewgenics!$"#
-    open-maximized true
+    match app-id="steam_app_686060"  // Mewgenics
     open-fullscreen true
+    open-floating false
 }
 window-rule {
     match app-id=r#"^(Slay the Spire 2)$"#
@@ -472,12 +472,6 @@ binds {
 
     // Toggle window opacity
     Mod+Shift+O { toggle-window-rule-opacity; }
-
-    // Suggested binds for running programs: terminal, app launcher, screen locker.
-    // Mod+Return hotkey-overlay-title="Open a Terminal: kitty" { spawn "kitty"; }
-    Mod+Return  hotkey-overlay-title="Open a Terminal: foot"        repeat=false    { spawn "foot"; }
-    Mod+D       hotkey-overlay-title="Run an Application: dms"      repeat=false    { spawn "dms" "ipc" "spotlight" "open"; }
-    Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock"    repeat=false    { spawn "swaylock"; }
 
     // You can also use a shell. Do this if you need pipes, multiple commands, etc.
     // Note: the entire command goes as a single argument in the end.
@@ -730,10 +724,6 @@ binds {
     // Powers off the monitors. To turn them back on, do any input like
     // moving the mouse or pressing any other key.
     Mod+Ctrl+Shift+P { power-off-monitors; }
-
-    // Utilities
-    Mod+E hotkey-overlay-title="Dismiss Notifications" { spawn "makoctl" "dismiss" "-a"; }
-    Mod+Shift+E hotkey-overlay-title="Restore Last Notification" { spawn "makoctl" "restore"; }
-    Mod+P hotkey-overlay-title="Show Clipboard" { spawn-sh "cliphist list | fuzzel -d | cliphist decode | wl-copy"; }
 }
 
+include "binds.kdl"
