@@ -1,4 +1,5 @@
 # Make sure to be a member of the "INPUT" group to make use of Fusuma.
+# -> `sudo usermod -aG input $(whoami)`
 # See "https://github.com/iberianpig/fusuma" for details.
 # Uses "fusuma-sendkey" plugin; install that too.
 
