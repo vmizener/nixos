@@ -26,15 +26,15 @@ in {
             "alias ls='eza'"
             "alias la='eza -a'"
             "alias ll='eza -al'"
-            "alias lt='eza -lT'"
-            "alias llt='eza -alT'"
+            "alias lt='eza -T'"
+            "alias lT='eza -lT'"
           ] else [
             "export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx"
             "alias ls='ls -Fh'"
             "alias la='ls -Fha'"
             "alias ll='ls -Fhal'"
-            "alias lt=\"tree -CpDh | sed -e 's/\(.*\)\[\([^]]*\)\]/\2 \1/'\""
-            "alias llt=\"tree -aCpDh | sed -e 's/\(.*\)\[\([^]]*\)\]/\2 \1/'\""
+            "alias lt='tree'"
+            "alias lT=\"tree -CpDh | sed -e 's/\(.*\)\[\([^]]*\)\]/\2 \1/'\""
           ]
         ) ++ (
           # vi aliases
