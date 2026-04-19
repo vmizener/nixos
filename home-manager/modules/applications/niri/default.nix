@@ -25,14 +25,19 @@ in {
             if ("${cmd}" == "")
               then ""
             else (lib.strings.concatStringsSep " " [
-              "${key}"
-              "hotkey-overlay-title=\"${desc}\""
+              "  ${key}"
+              (if ("${desc}" == "") then "" else "hotkey-overlay-title=\"${desc}\"")
               (lib.strings.concatStringsSep " " flags)
               "{ ${cmd}; }"
             ])
           );
         in [
+          "// This file is auto-generated via Nix home-manager."
+          "// !! DO NOT MODIFY DIRECTLY !!"
           "binds {"
+          ###########
+          # Utilities
+          ###########
           (
             bind "Mod+Return" "Open Terminal" [ "repeat=false" ] (
               if config.apps.foot.enable
@@ -61,7 +66,7 @@ in {
           (
             bind "Mod+E" "Dismiss Notifications" [] (
               if config.shell.dms.enable
-                then ''spawn "dms" "ipc" "call" "notifications" "toggle"''
+                then ''spawn "dms" "ipc" "call" "notifications" "dismissAllPopups"''
               else if config.services.mako.enable
                 then ''spawn "makoctl" "dismiss" "-a"''
               else lib.warn "Niri: No Notification Manager" ""
@@ -85,6 +90,25 @@ in {
               else lib.warn "Niri: No Clipboard Manager" ""
             )
           )
+          ##################
+          # System Functions
+          ##################
+          (
+            bind "XF86MonBrightnessUp" "" [ "allow-when-locked=true" ]
+              ''spawn "brightnessctl" "set" "+5%"''
+          )
+          (
+            bind "XF86MonBrightnessDown" "" [ "allow-when-locked=true" ]
+              ''spawn "brightnessctl" "set" "5%-"''
+          )
+          (
+            bind "Shift+XF86MonBrightnessUp" "" [ "allow-when-locked=true" ]
+              ''spawn "brightnessctl" "set" "+1%"''
+          )
+          (
+            bind "Shift+XF86MonBrightnessDown" "" [ "allow-when-locked=true" ]
+              ''spawn "brightnessctl" "set" "1%-"''
+          )
           "}"
         ]));
       };
@@ -92,7 +116,10 @@ in {
 
     (lib.mkIf cfg.useFlake {
       nixpkgs.overlays = [ inputs.niri.overlays.niri ];
-      home.packages = [ pkgs.xwayland-satellite ];
+      home.packages = with pkgs; [
+        brightnessctl
+        xwayland-satellite
+      ];
       targets.genericLinux.nixGL = {
         packages = inputs.nixgl.packages;
       };

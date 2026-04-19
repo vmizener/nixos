@@ -333,11 +333,12 @@ window-rule {
     // This app-id regular expression will work for both:
     // - host Firefox (app-id is "firefox")
     // - Flatpak Firefox (app-id is "org.mozilla.firefox")
-    match app-id=r#"^(firefox|zen|zen-beta)$"# title="^Picture-in-Picture$"
+    match app-id=r#"^(|firefox|zen|zen-beta)$"# title=r#"^Picture.in.[Pp]icture$"#
     default-floating-position x=0 y=0 relative-to="top-right"
     default-column-width { proportion 0.5; }
     default-window-height { proportion 0.5; }
     open-floating true
+    open-focused false
 }
 
 // Dim inactive floating windows
@@ -359,11 +360,12 @@ window-rule {
     match app-id="google-chrome" title=r#"^Meet -.*$"#
     exclude app-id="google-chrome" title=r#"^Meet -.*- Google Chrome$"#
 
-    open-floating true
     opacity 0.8
+    default-floating-position x=10 y=10 relative-to="top-right"
     default-window-height{ proportion 0.5; }
     default-column-width { proportion 0.5; }
-    default-floating-position x=10 y=10 relative-to="top-right"
+    open-floating true
+    open-focused false
 }
 
 // Steam windows
@@ -483,11 +485,6 @@ binds {
     XF86AudioLowerVolume allow-when-locked=true { spawn "wpctl" "set-volume" "@DEFAULT_AUDIO_SINK@" "0.1-"; }
     XF86AudioMute        allow-when-locked=true { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SINK@" "toggle"; }
     XF86AudioMicMute     allow-when-locked=true { spawn "wpctl" "set-mute" "@DEFAULT_AUDIO_SOURCE@" "toggle"; }
-
-    XF86MonBrightnessUp         allow-when-locked=true { spawn "brightnessctl" "set" "+5%"; }
-    XF86MonBrightnessDown       allow-when-locked=true { spawn "brightnessctl" "set" "5%-"; }
-    Shift+XF86MonBrightnessUp   allow-when-locked=true { spawn "brightnessctl" "set" "+1%"; }
-    Shift+XF86MonBrightnessDown allow-when-locked=true { spawn "brightnessctl" "set" "1%-"; }
 
     // Open/close the Overview: a zoomed-out view of workspaces and windows.
     // You can also move the mouse into the top-left hot corner,
