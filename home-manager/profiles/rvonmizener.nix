@@ -28,7 +28,7 @@
     enable = true;
     useFlake = true;
     localConfig = ''
-      # Restart ssh-agent on startup
+      // Restart ssh-agent on startup
       spawn-at-startup "systemctl" "--user" "restart" "ssh-agent.socket"
     '';
   };
