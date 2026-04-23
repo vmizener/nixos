@@ -724,3 +724,4 @@ binds {
 }
 
 include "binds.kdl"
+include "local.kdl"

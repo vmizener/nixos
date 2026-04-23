@@ -27,6 +27,10 @@
   apps.niri = {
     enable = true;
     useFlake = true;
+    localConfig = ''
+      # Restart ssh-agent on startup
+      spawn-at-startup "systemctl" "--user" "restart" "ssh-agent.socket"
+    '';
   };
   apps.nvim.enable = true;
   apps.ranger.enable = true;

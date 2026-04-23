@@ -9,6 +9,11 @@ in {
     apps.niri.enable = lib.mkEnableOption "${app}";
     apps.niri.useFlake = lib.mkEnableOption "use flake-defined niri bin";
     apps.niri.setNixOS = lib.mkEnableOption "set nixos relevant flags";
+    apps.niri.localConfig = lib.mkOption {
+      type = lib.types.str;
+      default = "";
+      description = "Additional optional config to load";
+    };
   };
   config = lib.mkIf cfg.enable (lib.mkMerge [
     (lib.mkIf cfg.setNixOS {
@@ -20,6 +25,7 @@ in {
     {
       xdg.configFile = {
         "niri/config.kdl".source = config.lib.file.mkOutOfStoreSymlink "${flakepath}/home-manager/modules/applications/niri/niri-config.kdl";
+        "niri/local.kdl".source = pkgs.writeText "local.kdl" cfg.localConfig;
         "niri/binds.kdl".source = pkgs.writeText "binds.kdl" (lib.strings.concatStringsSep "\n" (let
           bind = key: desc: flags: cmd: (
             if ("${cmd}" == "")
