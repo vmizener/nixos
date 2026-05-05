@@ -1,4 +1,6 @@
 local M = {}
+local hostname = vim.system({'uname', '-n'}, {text = true}):wait()['stdout']:gsub("\n", "")
+
 M.ALL = {
     'enable_config',
 }
@@ -54,20 +56,33 @@ M.CONFIGS = {
     -- }}}
     -- Nix (nixd) {{{
     nixd = {
+        cmd = {"nixd"},
+        filetypes = {"nix"},
+        root_markers = {"flake.nix", ".git"},
         settings = {
             nixd = {
                 nixpkgs = {
                     expr = "import <nixpkgs> { }",
                 },
                 formatting = {
-                    command = { "nixfmt" },
+                    command = {"nixfmt"},
                 },
                 options = {
                     nixos = {
-                        expr = '(builtins.getFlake("git+file://" + toString ./.)).nixosConfigurations.baohaus.options',
+                        expr = table.concat({
+                            '(builtins.getFlake("' .. vim.env["NH_FLAKE"] .. '"))',
+                            "nixosConfigurations",
+                            hostname,
+                            "options",
+                        }, "."),
                     },
                     home_manager = {
-                        expr = '(builtins.getFlake("git+file://" + toString ./.)).nixosConfigurations."bao@baohaus".options',
+                        expr = table.concat({
+                            '(builtins.getFlake("' .. vim.env["NH_FLAKE"] .. '"))',
+                            "nixosConfigurations",
+                            hostname,
+                            "options.home-manager.users.type.getSubOptions []",
+                        }, "."),
                     },
                 },
             },
@@ -82,11 +97,26 @@ function M.enable_config(name, config)
 end
 
 function M.init()
+    -- Enable global settings
+    local capabilities = vim.lsp.protocol.make_client_capabilities()
+    vim.lsp.config('*', {capabilities = capabilities})
+    vim.diagnostic.config({virtual_lines = true})
+    -- Enable per-server settings
     for name, config in pairs(M.CONFIGS) do
         M.enable_config(name, config)
     end
+    -- Add autocmd to trigger settings when a server attaches
     vim.api.nvim_create_autocmd('LspAttach', {
-        callback = require('mappings').lsp_attach
+        callback = function(ev)
+            -- Bind LSP mappings
+            require('mappings').lsp_attach(ev)
+            -- Enable completion if supported
+            local client = vim.lsp.get_client_by_id(ev.data.client_id)
+            if client and client:supports_method('textDocument/completion') then
+                vim.opt.completeopt = {'menuone', 'preview', 'noselect', 'fuzzy'}
+                vim.lsp.completion.enable(true, client.id, ev.buf, {autotrigger = true})
+            end
+        end,
     })
 end
 

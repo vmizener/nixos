@@ -15,9 +15,10 @@ in {
   };
   config = lib.mkIf cfg.enable {
     nix.nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
-    home.packages = [
-      pkgs.nixd
-    ];
+    # home.packages = with pkgs; [
+    #   nixd
+    #   nixfmt
+    # ];
     programs.neovim = {
       enable = true;
       # package = pkgs.neovim;
@@ -36,6 +37,7 @@ in {
 
         # nil
         nixd
+        nixfmt
       ];
 
       withNodeJs = true;
@@ -45,8 +47,6 @@ in {
       vimAlias = true;
       vimdiffAlias = true;
     };
-    # home.packages = with pkgs; [
-    # ];
     xdg.configFile = {
       "nvim".source = config.lib.file.mkOutOfStoreSymlink "${nvimcfg}";
     };

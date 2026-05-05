@@ -5,17 +5,19 @@ M.ALL = {
 
 M.mapleader = ' '
 M.lsp_binds = {
-    {'n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<cr>', "[LSP] Jump to the declaration of the symbol"},
-    {'n', 'gd', '<cmd>lua vim.lsp.buf.definition()<cr>', "[LSP] Jump to the definition of the symbol"},
-    {'n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>', "[LSP] Display information about the symbol in a floating window"},
-    {'n', '<C-k>', '<cmd>lua vim.lsp.buf.signature_help()<cr>', "[LSP] Display signature information about the symbol"},
-    {'n', 'gr', '<cmd>lua vim.lsp.buf.references()<cr>', "[LSP] List all references of the symbol in the quickfix window"},
-    {'n', 'gi', '<cmd>lua vim.lsp.buf.implementation()<cr>', "[LSP] List all implementations of the symbol in the quickfix window"},
-    {'n', 'gt', '<cmd>lua vim.lsp.buf.type_definition()<cr>', "[LSP] Jump to the type definition of the symbol"},
-    {'n', '<Leader>rn', '<cmd>lua vim.lsp.buf.rename()<cr>', "[LSP] Rename the symbol"},
-    {'n', '<Leader>j', '<cmd>lua vim.diagnostic.goto_next()<cr>', "[LSP] Jump to the next diagnostic message"},
-    {'n', '<Leader>k', '<cmd>lua vim.diagnostic.goto_prev()<cr>', "[LSP] Jump to the previous diagnostic message"},
-    {'n', '<Leader>f', '<cmd>lua vim.diagnostic.open_float()<cr>', "[LSP] Show diagnostics in a floating window"},
+    {'n', 'gD', function() vim.lsp.buf.declaration() end, "[LSP] Jump to the declaration of the symbol"},
+    {'n', 'gd', function() vim.lsp.buf.definition() end, "[LSP] Jump to the definition of the symbol"},
+    {'n', 'K', function() vim.lsp.buf.hover() end, "[LSP] Display information about the symbol in a floating window"},
+    {'n', '<C-k>', function() vim.lsp.buf.signature_help() end, "[LSP] Display signature information about the symbol"},
+    {'n', 'gr', function() vim.lsp.buf.references() end, "[LSP] List all references of the symbol in the quickfix window"},
+    {'n', 'gi', function() vim.lsp.buf.implementation() end, "[LSP] List all implementations of the symbol in the quickfix window"},
+    {'n', 'gt', function() vim.lsp.buf.type_definition() end, "[LSP] Jump to the type definition of the symbol"},
+    {'n', '<Leader>rn', function() vim.lsp.buf.rename() end, "[LSP] Rename the symbol"},
+    {'n', '<Leader>j', function() vim.diagnostic.jump({count=1, float=true}) end, "[LSP] Jump to the next diagnostic message"},
+    {'n', '<Leader>k', function() vim.diagnostic.jump({count=-1, float=true}) end, "[LSP] Jump to the previous diagnostic message"},
+    {'n', '<Leader>f', function() vim.diagnostic.open_float() end, "[LSP] Show diagnostics in a floating window"},
+    {'i', '<C-n>', function() vim.lsp.completion.get() end, "[LSP] Open auto-complete menu, or selects next completion option"},
+    {'i', '<C-p>', function() vim.lsp.completion.get() end, "[LSP] Open auto-complete menu, or selects prev completion option"},
 }
 M.plugin_binds = {
     -- Comment
@@ -136,8 +138,8 @@ function M.set_binds(binds, opts)
     end
 end
 
-function M.lsp_attach(_, bufnr)
-    local opts = {noremap=true, silent=true, buffer=bufnr}
+function M.lsp_attach(ev)
+    local opts = {noremap=true, silent=true, buffer=ev.buf}
     M.set_binds(M.lsp_binds, opts)
 end
 

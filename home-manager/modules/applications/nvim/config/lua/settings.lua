@@ -44,6 +44,8 @@ function M.set_options()
     set.ttimeoutlen = 10        -- Use less keycode timeout
     set.updatetime = 500        -- Check file status every half second
     set.virtualedit = 'block'   -- Allow selecting over non-existant characters in visual block mode
+    set.winblend = 20           -- Add transparency to floating windows
+    set.winborder = 'rounded'   -- Use rounded floating window borders
 
     -- Use UTF-8 encoding
     set.encoding = 'utf-8'
@@ -55,8 +57,6 @@ function M.set_options()
     set.list = true
     set.listchars = { tab='→ ', nbsp='␣', trail='·', extends='⟩', precedes='⟨' }
     set.showbreak = '↪ '
-    -- Enable auto-completion menu
-    set.completeopt = { 'menuone', 'preview', 'noselect' }
     -- Set terminal title
     set.title = true
     set.titlelen = 40
