@@ -16,19 +16,23 @@ in {
       enable = true;
       dotDir = "${config.xdg.configHome}/zsh";
       initContent = lib.strings.concatStringsSep "\n" (
+        let
+          ifPkg = p: lines: (if builtins.elem p config.home.packages then lines else []);
+          ifElsePkg = p: tLines: fLines: (if builtins.elem p config.home.packages then tLines else fLines);
+          ifOpt = o: lines: (if o then lines else []);
+        in
         [
           ''[[ -f "${homeManagerSessionVars}" ]] && source "${homeManagerSessionVars}"''
           "${builtins.readFile ./zshrc}"
         ] ++ (
-          # ls aliases
-          if builtins.elem pkgs.eza config.home.packages then [
+          ifElsePkg pkgs.eza [
             # substitute eza if installed
             "alias ls='eza'"
             "alias la='eza -a'"
             "alias ll='eza -al'"
             "alias lt='eza -T'"
             "alias lT='eza -lT'"
-          ] else [
+          ] [
             "export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx"
             "alias ls='ls -Fh'"
             "alias la='ls -Fha'"
@@ -37,27 +41,26 @@ in {
             "alias lT=\"tree -CpDh | sed -e 's/\(.*\)\[\([^]]*\)\]/\2 \1/'\""
           ]
         ) ++ (
-          # vi aliases
-          if config.apps.nvim.enable then [
+          ifOpt config.apps.nvim.enable [
             "alias vi='nvim'"
-          ] else []
+          ]
         ) ++ (
-          # git aliases
-          if builtins.elem pkgs.git config.home.packages then [
+          ifPkg pkgs.bat [
+            "alias cat='bat'"
+          ]
+        ) ++ (
+          ifPkg pkgs.git [
             "alias cdr='cd $(git rev-parse --show-toplevel)'"
-          ] else []
+          ]
         ) ++ (
-          # nix aliases
-          (
-            if builtins.elem pkgs.nh config.home.packages then [
-              "alias nhs='nh home switch ${flakepath} --show-trace'"
-            ] else []
-          ) ++ (
-            if config.opts.index.enable then [
-              "alias nl='nix-locate'"
-              "alias ,,=', -as'"
-            ] else []
-          )
+          ifPkg pkgs.nh [
+            "alias nhs='nh home switch ${flakepath} --show-trace'"
+          ]
+        ) ++ (
+          ifOpt config.opts.index.enable [
+            "alias nl='nix-locate'"
+            "alias ,,=', -as'"
+          ]
         )
       );
     };
