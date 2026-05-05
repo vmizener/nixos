@@ -34,6 +34,10 @@
       url = "github:AvengeMedia/DankMaterialShell/stable";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    helium = {
+      url = "github:schembriaiden/helium-browser-nix-flake";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     niri.url = "github:sodiboo/niri-flake";
     nixgl.url = "github:nix-community/nixGL";
     pyproject-nix = {
@@ -65,7 +69,7 @@
       inherit system;
       config = { allowUnfree = true; };
     };
-    extraSpecialArgs = { inherit self inputs unstable-pkgs; };
+    extraSpecialArgs = { inherit self inputs system unstable-pkgs; };
   in {
     # NixOS configuration entrypoint
     # Available through 'nixos-rebuild --flake .#your-hostname'

@@ -6,6 +6,7 @@
     ./fuzzel
     # ./ignis
     ./git
+    ./helium
     ./kanshi
     ./kitty
     ./maestral

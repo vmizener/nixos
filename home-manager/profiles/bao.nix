@@ -1,6 +1,6 @@
-{ config, lib, inputs, pkgs, ... }:
+{ config, pkgs, ... }:
 let
-  flakepath = "${config.home.homeDirectory}/config/";
+  flakepath = "${config.home.homeDirectory}/config";
 in {
   imports = [
     ./common.nix
@@ -16,6 +16,7 @@ in {
     font = "HackNerdFont";
   };
   apps.fuzzel.enable = true;
+  apps.helium.enable = true;
   apps.kanshi.enable = true;
   apps.kitty.enable = true;
   apps.maestral.enable = true;
@@ -29,7 +30,7 @@ in {
     enable = true;
     img = builtins.toPath "${flakepath}/assets/media/girls_outside_door.jpg";
   };
-  apps.webtorrent.enable = true;
+  # apps.webtorrent.enable = true;
 
   dev.c.enable = true;
   dev.golang.enable = true;
@@ -41,12 +42,23 @@ in {
 
   shell.zsh.enable = true;
 
-  # services.clipman.enable = true;
   services.cliphist.enable = true;
   services.mako.enable = true;
 
-  home.packages = with pkgs; [
-    ani-cli
+  home.packages = let
+    patched-ani-cli = pkgs.ani-cli.overrideAttrs (oldAttrs: rec {
+      version = "4.14";
+      src = pkgs.fetchFromGitHub {
+        owner = "pystardust";
+        repo = "ani-cli";
+        tag = "v${version}";
+        hash = "sha256-OyCKDN89sBz59+3JncMDyNOq8UMqqjara+A0Owo3oko=";
+      };
+      runtimeInputs = oldAttrs.runtimeInputs ++ [pkgs.openssl];
+    });
+  in with pkgs; [
+    patched-ani-cli
+
     animdl
     cava
     mako
@@ -55,8 +67,8 @@ in {
     spotify-tray
 
     evince
-    (pkgs.texlive.combine {
-      inherit (pkgs.texlive)
+    (texlive.combine {
+      inherit (texlive)
       scheme-basic
       dvisvgm
       dvipng # for preview and export as html
