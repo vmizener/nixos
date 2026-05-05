@@ -254,10 +254,10 @@ layout {
         hide-when-single-tab
         place-within-column
         gap 5
-        width 4
+        width 5
         length total-proportion=1.0
         position "right"
-        gaps-between-tabs 2
+        gaps-between-tabs 3
         corner-radius 8
         active-gradient from="#80c8ff" to="#bbddff" angle=45
         inactive-gradient from="#505050" to="#808080" angle=45 relative-to="workspace-view"
@@ -423,6 +423,14 @@ window-rule {
     open-maximized true
 }
 
+window-rule {
+    match app-id=r#"^foot$"#
+    background-effect {
+        blur true
+        xray false
+    }
+}
+
 // Example: block out two password managers from screen capture.
 // (This example rule is commented out with a "/-" in front.)
 /-window-rule {
@@ -448,6 +456,14 @@ layer-rule {
     // Find the right namespace by running niri msg layers.
     match namespace="^awww-daemon$"
     place-within-backdrop true
+}
+
+layer-rule {
+    match namespace="^dms:bar$"
+    background-effect {
+        blur true
+        xray false
+    }
 }
 
 // Optionally, disable the workspace shadows in the overview.

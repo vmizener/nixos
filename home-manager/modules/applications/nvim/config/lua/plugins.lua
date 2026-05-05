@@ -175,8 +175,19 @@ M.configs = {
         priority = 1000, -- Load colorscheme first
         init = function()
             vim.opt.termguicolors = true
-            -- Options: 'hard', 'medium', 'soft'
-            vim.g['gruvbox_material_background'] = 'medium'
+            vim.opt.background = 'dark'
+            -- Use terminal background
+            vim.api.nvim_create_autocmd("ColorScheme", {
+                pattern = "*",
+                callback = function()
+                    vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+                    vim.api.nvim_set_hl(0, "NormalFloat", { bg = "none" })
+                    vim.api.nvim_set_hl(0, "FoldColumn", { bg = "none" })
+                    vim.api.nvim_set_hl(0, "SignColumn", { bg = "none" })
+                end,
+            })
+            -- Enable
+            vim.g['gruvbox_material_better_performance'] = 1
             vim.api.nvim_command('colorscheme gruvbox-material')
         end
     },
@@ -343,22 +354,6 @@ M.configs = {
                     border = 'curved',
                 },
             })
-        end
-    },
-    -- }}}
-    -- Transparent makes Neovim transparent {{{
-    {
-        'xiyaowong/nvim-transparent',
-        lazy = false,
-        priority = 10,
-        config = function ()
-            require("transparent").setup({
-                extra_groups = {
-                    "Folded",
-                },
-                exclude_groups = {}, -- table: groups you don't want to clear
-            })
-            -- vim.api.nvim_command('TransparentEnable')  -- Transparency setting is cached; no need to run every time.
         end
     },
     -- }}}
