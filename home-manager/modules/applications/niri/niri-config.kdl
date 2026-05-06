@@ -283,7 +283,6 @@ layout {
 // See the binds section below for more spawn examples.
 
 spawn-at-startup "dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY XDG_CURRENT_DESKTOP=X-NIXOS-SYSTEMD-AWARE"
-spawn-at-startup "xwayland-satellite"
 
 // Uncomment this line to ask the clients to omit their client-side decorations if possible.
 // If the client will specifically ask for CSD, the request will be honored.
@@ -300,6 +299,10 @@ screenshot-path "~/Pictures/Screenshots/Screenshot from %Y-%m-%d %H-%M-%S.png"
 // You can also set this to null to disable saving screenshots to disk.
 // screenshot-path null
 
+xwayland-satellite {
+    path "xwayland-satellite"
+}
+
 // Animation settings.
 // The wiki explains how to configure individual animations:
 // https://github.com/YaLTeR/niri/wiki/Configuration:-Animations
@@ -309,6 +312,19 @@ animations {
 
     // Slow down all animations by this factor. Values below 1 speed them up instead.
     // slowdown 3.0
+}
+
+blur {
+    passes 2
+    offset 1.5
+    noise 0.05
+    saturation 1.5
+}
+
+overview {
+    workspace-shadow {
+        off
+    }
 }
 
 // workspace "steam" {
@@ -421,6 +437,10 @@ window-rule {
 window-rule {
     match app-id=r#"^kitty$"#
     open-maximized true
+    background-effect {
+        blur true
+        xray false
+    }
 }
 
 window-rule {
@@ -463,13 +483,6 @@ layer-rule {
     background-effect {
         blur true
         xray false
-    }
-}
-
-// Optionally, disable the workspace shadows in the overview.
-overview {
-    workspace-shadow {
-        off
     }
 }
 
