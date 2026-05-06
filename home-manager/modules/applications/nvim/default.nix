@@ -15,10 +15,6 @@ in {
   };
   config = lib.mkIf cfg.enable {
     nix.nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
-    # home.packages = with pkgs; [
-    #   nixd
-    #   nixfmt
-    # ];
     programs.neovim = {
       enable = true;
       # package = pkgs.neovim;
@@ -30,10 +26,13 @@ in {
         fd
         ripgrep
 
+        go
+
         black
         pyright
 
         lua-language-server
+        stylua
 
         # nil
         nixd

@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }: {
+{ pkgs, ... }@args: {
   home.packages = with pkgs; [
     bat
     btop
@@ -29,6 +29,9 @@
   home = {
     stateVersion = "23.05"; # Please read the comment before changing.
     enableNixpkgsReleaseCheck = true;
+    sessionVariables = {
+      IS_NIXOS = if (builtins.hasAttr "nixosConfig" args) then "true" else "false";
+    };
   };
 
   # Let Home Manager install and manage itself.
