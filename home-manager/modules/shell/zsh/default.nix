@@ -55,6 +55,7 @@ in {
         ) ++ (
           ifPkg pkgs.nh [
             "alias nhs='nh home switch ${flakepath} --show-trace'"
+            "alias nf='nh search'"
           ]
         ) ++ (
           ifOpt config.opts.index.enable [
