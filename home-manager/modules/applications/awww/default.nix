@@ -2,12 +2,13 @@
 let
   app = "awww";
   cfg = config.apps.${app};
+  sys = pkgs.stdenv.hostPlatform.system;
 in {
   options = {
-    apps.awww.enable = lib.mkEnableOption "${app}";
+    apps.awww.enable = lib.mkEnableOption "awww";
     apps.awww.pkg = lib.mkOption {
       type = lib.types.package;
-      default = inputs.awww.packages.${pkgs.system}.awww;
+      default = inputs.awww.packages.${sys}.awww;
       description = "awww package to use";
     };
     apps.awww.img = lib.mkOption {

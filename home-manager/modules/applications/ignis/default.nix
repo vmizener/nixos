@@ -3,6 +3,7 @@ let
   app = "ignis";
   cfg = config.apps.${app};
   flakepath = "${config.home.sessionVariables.NH_FLAKE}";
+  sys = pkgs.stdenv.hostPlatform.system;
 in {
   # See: https://ignis-sh.github.io/ignis/latest/user/nix.html
   imports = [ inputs.ignis.homeManagerModules.default ];
@@ -11,7 +12,7 @@ in {
   };
   config = lib.mkIf cfg.enable (
     let
-      pkg = (inputs.ignis.packages.${pkgs.system}.default.override {
+      pkg = (inputs.ignis.packages.${sys}.default.override {
         enableBluetoothService = true;
         enableRecorderService = true;
         enableAudioService = true;
@@ -25,7 +26,7 @@ in {
       });
     in {
       home.packages = [
-        inputs.ignisctl-rs.packages.${pkgs.system}.ignisctl-rs
+        inputs.ignisctl-rs.packages.${sys}.ignisctl-rs
         pkg
         # (pkgs.python3.withPackages (_: [pkg]))
       ] ++ (with pkgs; [

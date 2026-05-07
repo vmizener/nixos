@@ -2,6 +2,7 @@
 let
   pkg = "dms";
   cfg = config.shell.${pkg};
+  sys = pkgs.stdenv.hostPlatform.system;
 in {
   imports = [
     inputs.dms.homeModules.dank-material-shell
@@ -13,7 +14,7 @@ in {
   config = lib.mkIf cfg.enable {
     programs.dank-material-shell = {
       enable = true;
-      dgop.package = inputs.dgop.packages.${pkgs.system}.default;
+      dgop.package = inputs.dgop.packages.${sys}.default;
 
       systemd = {
         enable = true;             # Systemd service for auto-start

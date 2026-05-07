@@ -3,10 +3,11 @@
 let
   mod = "zen";
   cfg = config.core.${mod};
+  sys = pkgs.stdenv.hostPlatform.system;
   # Create a wrapper script for zen-browser with Wayland enabled
   zenWithWayland = pkgs.symlinkJoin {
     name = "zen-browser-wayland";
-    paths = [inputs.zen-browser.packages."${pkgs.system}".default];
+    paths = [inputs.zen-browser.packages.${sys}.default];
     buildInputs = [pkgs.makeWrapper];
     postBuild = ''
       wrapProgram $out/bin/zen-beta \
